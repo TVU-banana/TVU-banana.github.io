@@ -1,0 +1,87 @@
+baseURL: "https://tvu-banana.github.io/"
+locale: "zh-CN"
+defaultContentLanguage: "zh"
+hasCJKLanguage: true
+title: "TVU-banana"
+theme: "hugo-PaperMod"
+
+enableRobotsTXT: true
+enableEmoji: true
+enableGitInfo: true
+
+pagination:
+  pagerSize: 10
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+taxonomies:
+  category: categories
+  tag: tags
+  series: series
+
+menu:
+  main:
+    - name: 文章
+      url: /posts/
+      weight: 10
+    - name: 归档
+      url: /archives/
+      weight: 20
+    - name: 标签
+      url: /tags/
+      weight: 30
+    - name: 搜索
+      url: /search/
+      weight: 40
+    - name: 关于
+      url: /about/
+      weight: 50
+
+params:
+  env: production
+  title: "TVU-banana"
+  description: "记录软件工程、AI 应用与持续学习。"
+  author: "TVU-banana"
+  keywords: ["软件工程", "AI 应用", "个人博客"]
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowWordCount: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowRssButtonInSectionTermList: true
+  ShowToc: true
+  TocOpen: false
+
+  homeInfoParams:
+    Title: "你好，我是 TVU-banana 👋"
+    Content: "这里记录软件工程实践、AI 应用探索，以及持续学习中的思考。"
+
+  socialIcons:
+    - name: github
+      title: GitHub
+      url: "https://github.com/TVU-banana"
+
+  editPost:
+    URL: "https://github.com/TVU-banana/TVU-banana.github.io/tree/main/content"
+    Text: "在 GitHub 上编辑"
+    appendFilePath: true
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.35
+    minMatchCharLength: 1
+    limit: 10
+    keys: ["title", "permalink", "summary", "content"]
+
+markup:
+  highlight:
+    noClasses: false
