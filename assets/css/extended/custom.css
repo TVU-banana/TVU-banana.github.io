@@ -3,6 +3,7 @@
 :root {
     --main-width: 900px;
     --nav-width: var(--main-width);
+    --fixed-header-height: var(--header-height);
 }
 
 iframe {
@@ -21,6 +22,21 @@ iframe {
     box-sizing: border-box;
     max-width: calc(var(--main-width) + var(--gap) * 2);
     padding-inline: var(--gap);
+}
+
+.header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    min-height: var(--fixed-header-height);
+    background: color-mix(in srgb, var(--theme) 80%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+.main {
+    padding-top: calc(var(--gap) + var(--fixed-header-height));
 }
 
 .nav > #menu {
@@ -50,6 +66,10 @@ iframe {
 }
 
 @media screen and (max-width: 768px) {
+    :root {
+        --fixed-header-height: calc(var(--header-height) * 2);
+    }
+
     .nav > #menu {
         order: 3;
         width: 100%;
