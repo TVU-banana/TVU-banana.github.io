@@ -1,7 +1,7 @@
 # If your site is in 'https', then make sure your base url isn't written using 'http' otherwise your sitemap would
 # contain http (as opposeed to https) URLs. This would affect Google indexing of your URLs.
 baseURL: "https://tvu-banana.github.io/"
-title: PaperMod
+title: DiKi
 copyright: "© [PaperMod Contributors](https://github.com/adityatelange/hugo-PaperMod/graphs/contributors)"
 theme: [hugo-PaperMod]
 
@@ -46,6 +46,7 @@ languages:
           weight: 4
 
   zh:
+    title: DiKi
     languageName: "中"
     weight: 2
     taxonomies:
@@ -69,8 +70,8 @@ languages:
     params:
       languageAltTitle: 中文
       homeInfoParams:
+        # Enables the theme's homepage portal; visible copy is in data/portal-copy.yaml.
         Title: "PaperMod 演示"
-        Content: "一个快速、简洁、响应式的 Hugo 主题演示站点。"
 
 outputFormats:
   llms:
@@ -125,13 +126,8 @@ params:
         url: tags
 
   homeInfoParams:
+    # Enables the theme's homepage portal; visible copy is in data/portal-copy.yaml.
     Title: "PaperMod's Demo"
-    Content: |
-      A clean, fast, and responsive Hugo theme built for a polished reading experience. [Read more..](/about/)
-      - Lightweight by design, with a modern layout that keeps your content front and center.
-      - Explore the [Docs (Wiki)](https://github.com/adityatelange/hugo-PaperMod/wiki/) to learn more about features and configuration.
-      - Support the project on [GitHub](https://github.com/adityatelange/hugo-PaperMod) and share it with others who love minimalistic designs.
-      - PaperMod is inspired by the [Paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3) theme.
 
   socialIcons:
     - name: github

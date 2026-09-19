@@ -1,0 +1,19 @@
+# Homepage portal copy. Both language versions intentionally share the same
+# Markdown structure, links, and number of content lines.
+en:
+  title: "PaperMod's Demo"
+  content: |
+    A clean, fast, and responsive Hugo theme built for a polished reading experience. [Read more..](/about/)
+    - Lightweight by design, with a modern layout that keeps your content front and center.
+    - Explore the [Docs (Wiki)](https://github.com/adityatelange/hugo-PaperMod/wiki/) to learn more about features and configuration.
+    - Support the project on [GitHub](https://github.com/adityatelange/hugo-PaperMod) and share it with others who love minimalistic designs.
+    - PaperMod is inspired by the [Paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3) theme.
+
+zh:
+  title: "PaperMod 演示"
+  content: |
+    一个简洁、快速、响应式的 Hugo 主题，为顺畅的阅读体验而构建。[了解更多…](/zh/about/)
+    - 轻量化设计，采用现代布局，让内容始终处于阅读焦点。
+    - 浏览 [文档（Wiki）](https://github.com/adityatelange/hugo-PaperMod/wiki/)，了解功能与配置方式。
+    - 在 [GitHub](https://github.com/adityatelange/hugo-PaperMod) 上支持该项目，并分享给同样喜爱极简设计的人。
+    - PaperMod 的设计灵感来自 [Paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3) 主题。
