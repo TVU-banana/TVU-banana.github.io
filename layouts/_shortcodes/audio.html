@@ -1,0 +1,12 @@
+{{- $src := .Get "src" -}}
+{{- if $src -}}
+<figure>
+  <audio controls preload="{{ .Get "preload" | default "metadata" }}">
+    <source src="{{ $src | safeURL }}">
+    Your browser does not support the audio element.
+  </audio>
+  {{- with .Get "caption" }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end -}}

@@ -1,21 +1,57 @@
-# TVU-banana 的个人主页
+# hugo-paperMod Example
 
-这是一个使用 [Hugo](https://gohugo.io/) 和 [PaperMod](https://github.com/adityatelange/hugo-PaperMod) 构建的静态个人博客。
+This repository offers an example site for [hugo-PaperMod](https://github.com/adityatelange/hugo-PaperMod)
 
-## 本地预览
+## Install
 
-安装 Hugo 后，在仓库根目录执行：
+Read Wiki => [hugo-PaperMod - Installation](https://github.com/adityatelange/hugo-PaperMod/wiki/Installation)
 
-```bash
-hugo server -D
+## Directory Tree
+
 ```
-
-终端会显示本地访问地址。发布文章前，将文章 front matter 中的 `draft` 设为 `false`。
-
-## 写一篇文章
-
-```bash
-hugo new content content/posts/文章-slug.md
+.(site root)
+├── configTaxo.yml
+├── hugo.yaml
+├── content
+│   ├── archives.fr.md
+│   ├── archives.md
+│   ├── posts
+│   │   ├── emoji-support.md
+│   │   ├── markdown-syntax.fa.md
+│   │   ├── markdown-syntax.fr.md
+│   │   ├── markdown-syntax.md
+│   │   ├── math-typesetting.md
+│   │   ├── papermod
+│   │   │   ├── _index.md
+│   │   │   ├── papermod-faq.md
+│   │   │   ├── papermod-features
+│   │   │   │   ├── images
+│   │   │   │   │   ├── homeinfo.jpg
+│   │   │   │   │   ├── profile.jpg
+│   │   │   │   │   └── regular.jpg
+│   │   │   │   └── index.md
+│   │   │   ├── papermod-icons.md
+│   │   │   ├── papermod-installation.md
+│   │   │   └── papermod-variables.md
+│   │   ├── placeholder-text.md
+│   │   └── rich-content.md
+│   ├── search.fr.md
+│   ├── search.md
+│   └── tags
+├── LICENSE
+├── README.md
+├── resources
+│   └── _gen
+│       ├── assets
+│       └── images
+├── static
+│   ├── android-chrome-192x192.png
+│   ├── android-chrome-512x512.png
+│   ├── apple-touch-icon.png
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   ├── favicon.ico
+│   └── papermod-cover.png
+└── themes
+    └── hugo-PaperMod
 ```
-
-文章放在 `content/posts/`。推送到 `main` 分支后，GitHub Actions 会自动构建并发布到 GitHub Pages。

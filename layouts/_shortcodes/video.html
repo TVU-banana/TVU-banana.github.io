@@ -1,0 +1,12 @@
+{{- $src := .Get "src" -}}
+{{- if $src -}}
+<figure>
+  <video controls preload="{{ .Get "preload" | default "metadata" }}"{{ with .Get "poster" }} poster="{{ . | safeURL }}"{{ end }}>
+    <source src="{{ $src | safeURL }}">
+    Your browser does not support the video element.
+  </video>
+  {{- with .Get "caption" }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end -}}
