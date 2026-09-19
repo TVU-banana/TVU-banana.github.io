@@ -24,7 +24,7 @@ pagination:
 
 languages:
   en:
-    languageName: "English"
+    languageName: "EN"
     weight: 1
     taxonomies:
       category: categories
@@ -44,70 +44,33 @@ languages:
         - name: Tags
           url: tags/
           weight: 4
-        - name: "Docs (Wiki)"
-          url: https://github.com/adityatelange/hugo-PaperMod/wiki/
 
-  fr:
-    languageName: "French"
+  zh:
+    languageName: "中"
     weight: 2
-    title: PaperModL2
     taxonomies:
-      category: FRcategories
-      tag: FRtags
-      series: FRseries
+      category: categories
+      tag: tags
+      series: series
     menu:
       main:
-        - name: Archive
+        - name: 关于
+          url: about
+          weight: 1
+        - name: 归档
           url: archives/
-          weight: 5
-        - name: FRTags
-          url: frtags
-          weight: 10
-        - name: FRCategories
-          url: frcategories
-          weight: 10
-        - name: FRSeries
-          url: frseries
-          weight: 10
-        - name: External
-          url: "https://github.com/adityatelange/hugo-PaperMod/wiki/Features#profile-mode"
-
-    # custom params for each language should be under [langcode].parms - hugo v0.120.0
+          weight: 2
+        - name: 搜索
+          url: search/
+          weight: 3
+        - name: 标签
+          url: tags/
+          weight: 4
     params:
-      languageAltTitle: French
-      profileMode:
-        enabled: true
-        title: PaperMod
-        imageUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&h=200"
-        imageTitle: ProfileMode image
-        # imageWidth: 120
-        # imageHeight: 120
-        subtitle: "☄️ Fast | ☁️ Fluent | 🌙 Smooth | 📱 Responsive"
-        buttons:
-          - name: Blog
-            url: posts
-          - name: Profile Mode
-            url: https://github.com/adityatelange/hugo-PaperMod/wiki/Features#profile-mode
-
-  fa:
-    languageName: "Farsi"
-    languagedirection: rtl
-    weight: 3
-    title: PaperMod RTL
-    taxonomies:
-      category: FAcategories
-      tag: FAtags
-      series: FAseries
-    menu:
-      main:
-        - name: FATags
-          url: fatags
-          weight: 10
-    # custom params for each language should be under [langcode].parms - hugo v0.120.0
-    params:
+      languageAltTitle: 中文
       homeInfoParams:
-        Title: "Hi there \U0001F44B"
-        Content: Welcome to RTL layout
+        Title: "PaperMod 演示"
+        Content: "一个快速、简洁、响应式的 Hugo 主题演示站点。"
 
 outputFormats:
   llms:
@@ -144,6 +107,9 @@ params:
   ShowToc: true
   # comments: false
   images: ["images/papermod-cover.png"]
+
+  label:
+    text: "DiKi"
 
   profileMode:
     enabled: false

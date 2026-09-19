@@ -1,0 +1,66 @@
+{{- if (not site.Params.disableThemeToggle) }}
+  {{- if (eq site.Params.defaultTheme "light") }}
+  <script>if (localStorage.getItem("pref-theme") === "dark") { document.body.classList.add("dark"); }</script>
+  {{- else if (eq site.Params.defaultTheme "dark") }}
+  <script>if (localStorage.getItem("pref-theme") === "light") { document.body.classList.remove("dark"); }</script>
+  {{- else }}
+  <script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+      document.body.classList.add("dark");
+    } else if (localStorage.getItem("pref-theme") === "light") {
+      document.body.classList.remove("dark");
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.classList.add("dark");
+    }
+  </script>
+  {{- end }}
+{{- else if (and (ne site.Params.defaultTheme "light") (ne site.Params.defaultTheme "dark")) }}
+<script>if (window.matchMedia("(prefers-color-scheme: dark)").matches) { document.body.classList.add("dark"); }</script>
+{{- end }}
+
+<header class="header">
+  <nav class="nav">
+    <div class="logo">
+      {{- $labelText := site.Params.label.text | default site.Title }}
+      {{- if site.Title }}
+      <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $labelText }} (Alt + H)">{{ $labelText }}</a>
+      {{- end }}
+    </div>
+
+    {{- $currentPage := . }}
+    <ul id="menu">
+      {{- range site.Menus.main }}
+      {{- $menuItemURL := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL)) | absLangURL }}
+      {{- $pageURL := $currentPage.Permalink | absLangURL }}
+      {{- $isSearch := eq (site.GetPage .KeyName).Layout "search" }}
+      <li>
+        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}{{ cond $isSearch " (Alt + /)" "" }}"{{ if $isSearch }} accesskey="/"{{ end }}>
+          <span{{ if eq $menuItemURL $pageURL }} class="active"{{ end }}>{{ .Pre }}{{ .Name }}{{ .Post }}</span>
+        </a>
+      </li>
+      {{- end }}
+    </ul>
+
+    <div class="nav-switches">
+      {{- $lang := .Lang }}
+      {{- with site.Home.Translations }}
+      <ul class="lang-switch" aria-label="Language">
+        {{- range . }}
+        {{- if ne $lang .Lang }}
+        <li>
+          <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default .Language.LanguageName }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.LanguageName }}">{{ .Language.LanguageName }}</a>
+        </li>
+        {{- end }}
+        {{- end }}
+      </ul>
+      {{- end }}
+
+      {{- if not site.Params.disableThemeToggle }}
+      <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+        <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+        <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>
+      </button>
+      {{- end }}
+    </div>
+  </nav>
+</header>
