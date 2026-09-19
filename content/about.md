@@ -7,6 +7,7 @@ draft: false
 hiddenInRss: true
 disableShare: true
 ShowBreadcrumbs: false
+hideTranslationList: true
 ---
 
 PaperMod is a fast, clean, and responsive Hugo theme designed for bloggers and content creators. It offers a modern design with a focus on readability and performance, making it an excellent choice for personal blogs, portfolios, and documentation sites.
