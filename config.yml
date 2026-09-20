@@ -99,7 +99,7 @@ params:
   ShowToc: true
   # comments: false
   label:
-    text: "DiKi"
+    text: "DiKi's Blog"
 
   profileMode:
     enabled: false
