@@ -65,6 +65,60 @@ iframe {
     font-weight: 500;
 }
 
+.search-tags {
+    margin-top: calc(var(--gap) * 2);
+}
+
+.search-tags h2 {
+    margin: 0 0 var(--gap);
+    font-size: 1.1rem;
+}
+
+.search-tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.search-tags-list li {
+    margin: 0;
+}
+
+.search-tags-list a {
+    display: inline-flex;
+    min-height: 44px;
+    box-sizing: border-box;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--tertiary);
+    color: var(--primary);
+    transition: transform 0.1s, border-color 0.1s;
+}
+
+.search-tags-list a:hover {
+    border-color: var(--secondary);
+}
+
+.search-tags-list a:active {
+    transform: scale(0.97);
+}
+
+.search-tags-list a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.search-tags-list sup {
+    color: var(--secondary);
+    font-size: 0.75em;
+}
+
 @media screen and (max-width: 768px) {
     :root {
         --fixed-header-height: calc(var(--header-height) * 2);

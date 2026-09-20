@@ -26,4 +26,27 @@
     <ul id="searchResults" aria-label="search results"></ul>
 </div>
 
+{{- with site.GetPage "/tags" -}}
+    {{- with .Data.Terms.Alphabetical }}
+    <section class="search-tags" aria-labelledby="search-tags-title">
+        <h2 id="search-tags-title">{{ i18n "browse_tags" | default "Browse by tag" }}</h2>
+        <ul class="search-tags-list">
+            {{- $type := "tags" }}
+            {{- range . }}
+                {{- $name := .Name }}
+                {{- $count := .Count }}
+                {{- with site.GetPage (printf "/%s/%s" $type $name) }}
+                <li>
+                    <a href="{{ .Permalink }}" aria-label="{{ .Name }} ({{ $count }})">
+                        <span>{{ .Name }}</span>
+                        <sup>{{ $count }}</sup>
+                    </a>
+                </li>
+                {{- end }}
+            {{- end }}
+        </ul>
+    </section>
+    {{- end }}
+{{- end }}
+
 {{- end }}{{/* end main */}}
