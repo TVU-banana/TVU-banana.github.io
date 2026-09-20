@@ -43,28 +43,16 @@
 {{- if .IsHome }}
 {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
 {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
-{{- if eq (len $pages) 0 }}
-  {{- range hugo.Sites }}
-    {{- if eq .Language.Lang "en" }}
-      {{- $pages = where .RegularPages "Type" "in" (slice "posts" "papermod") }}
-      {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
-    {{- end }}
-  {{- end }}
-{{- end }}
 {{- end }}
 
 {{- $paginator := .Paginate $pages }}
-
-{{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
-{{- partial "home_info.html" . }}
-{{- end }}
 
 {{- $term := .Data.Term }}
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
 
-{{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
+{{- $user_preferred := site.Params.disableSpecial1stPost }}
 {{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
 {{- $class = "first-entry" }}
 {{- else if $term }}

@@ -48,7 +48,7 @@
         {{- range . }}
         {{- if ne $lang .Lang }}
         <li>
-          <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default .Language.LanguageName }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.LanguageName }}">{{ .Language.LanguageName }}</a>
+          <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default .Language.Label }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.Label }}">{{ .Language.Label }}</a>
         </li>
         {{- end }}
         {{- end }}
