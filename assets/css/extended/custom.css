@@ -1,8 +1,8 @@
 /* Custom styles added to demo */
 
 :root {
-    --main-width: 900px;
-    --nav-width: var(--main-width);
+    --main-width: 720px;
+    --nav-width: 900px;
     --fixed-header-height: var(--header-height);
 }
 
@@ -20,7 +20,7 @@ iframe {
 
 .nav {
     box-sizing: border-box;
-    max-width: calc(var(--main-width) + var(--gap) * 2);
+    max-width: calc(var(--nav-width) + var(--gap) * 2);
     padding-inline: var(--gap);
 }
 
@@ -41,14 +41,6 @@ iframe {
 
 .nav > #menu {
     margin: auto var(--gap) auto auto;
-}
-
-.menu-icon {
-    width: 16px;
-    height: 16px;
-    margin-inline-end: 4px;
-    vertical-align: -0.2em;
-    pointer-events: none;
 }
 
 .nav-switches {
