@@ -35,7 +35,7 @@ languages:
         - name: About
           url: about
           weight: 1
-        - name: Archive
+        - name: Articles
           url: archives
           weight: 2
         - name: Search
@@ -55,7 +55,7 @@ languages:
         - name: 关于
           url: about
           weight: 1
-        - name: 归档
+        - name: 文章
           url: archives/
           weight: 2
         - name: 搜索
