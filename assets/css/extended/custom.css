@@ -2,7 +2,7 @@
 
 :root {
     --main-width: 720px;
-    --nav-width: 900px;
+    --nav-width: var(--main-width);
     --fixed-header-height: var(--header-height);
 }
 
