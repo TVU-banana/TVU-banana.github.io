@@ -13,6 +13,9 @@
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a>
         · <a href="https://github.com/TVU-banana" rel="noopener" target="_blank">GitHub</a>
+        {{- with site.Home.OutputFormats.Get "RSS" }}
+        · <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">RSS</a>
+        {{- end }}
     </span>
 </footer>
 {{- end }}
