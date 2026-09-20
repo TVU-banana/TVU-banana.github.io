@@ -119,6 +119,102 @@ iframe {
     font-size: 0.75em;
 }
 
+/* Archive: keep the hierarchy to year -> article cards. */
+.archive-list {
+    margin-top: calc(var(--gap) * 2);
+}
+
+.archive-year {
+    margin: 0;
+    border-bottom: 0;
+}
+
+.archive-year + .archive-year {
+    margin-top: calc(var(--gap) * 2.5);
+}
+
+.archive-year-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0 0 var(--gap);
+    color: var(--primary);
+    font-size: 30px;
+    line-height: 1.2;
+}
+
+.archive-count {
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.archive-posts {
+    display: grid;
+    gap: 12px;
+}
+
+.archive-card {
+    position: relative;
+    margin: 0;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 4px);
+    background: var(--entry);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 4%, transparent);
+    transition: transform 180ms ease-out, box-shadow 180ms ease-out, border-color 180ms ease-out;
+}
+
+.archive-card:hover,
+.archive-card:focus-within {
+    transform: translateY(-2px) scale(1.01);
+    border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.archive-card:focus-within {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.archive-card-title {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: var(--primary);
+    font-size: 22px;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+.archive-card-meta {
+    position: relative;
+    z-index: 1;
+    margin-top: 8px;
+    color: var(--secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.archive-card-separator {
+    margin-inline: 6px;
+}
+
+.archive-card-tags {
+    overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .archive-card {
+        transition: none;
+    }
+
+    .archive-card:hover,
+    .archive-card:focus-within {
+        transform: none;
+    }
+}
+
 @media screen and (max-width: 768px) {
     :root {
         --fixed-header-height: var(--header-height);
@@ -166,4 +262,23 @@ iframe {
         margin-inline: 2px;
     }
 
+    .archive-list {
+        margin-top: var(--gap);
+    }
+
+    .archive-year + .archive-year {
+        margin-top: calc(var(--gap) * 2);
+    }
+
+    .archive-year-header {
+        font-size: 26px;
+    }
+
+    .archive-card {
+        padding: 16px;
+    }
+
+    .archive-card-title {
+        font-size: 20px;
+    }
 }
