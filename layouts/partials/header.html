@@ -43,7 +43,7 @@
 
     <div class="nav-switches">
       {{- $lang := .Lang }}
-      {{- with site.Home.Translations }}
+      {{- with .Translations }}
       <ul class="lang-switch" aria-label="Language">
         {{- range . }}
         {{- if ne $lang .Lang }}
