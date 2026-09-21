@@ -73,14 +73,29 @@
 
 {{- if (not site.Params.disableThemeToggle) }}
 <script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
+    const themeToggle = document.getElementById("theme-toggle");
+
+    if (themeToggle) {
+        const applyTheme = () => {
+            const isDark = document.body.classList.toggle("dark");
+            localStorage.setItem("pref-theme", isDark ? "dark" : "light");
+            themeToggle.setAttribute("aria-pressed", String(isDark));
+            themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+        };
+
+        themeToggle.setAttribute("aria-pressed", String(document.body.classList.contains("dark")));
+
+        themeToggle.addEventListener("click", () => {
+            const bounds = themeToggle.getBoundingClientRect();
+            document.documentElement.style.setProperty("--theme-toggle-x", `${bounds.left + bounds.width / 2}px`);
+            document.documentElement.style.setProperty("--theme-toggle-y", `${bounds.top + bounds.height / 2}px`);
+
+            if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                document.startViewTransition(applyTheme);
+            } else {
+                applyTheme();
+            }
+        });
+    }
 </script>
 {{- end }}
