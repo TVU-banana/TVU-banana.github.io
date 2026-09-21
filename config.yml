@@ -32,12 +32,9 @@ languages:
       series: series
     menu:
       main:
-        - name: Home
-          url: about
-          weight: 1
         - name: Articles
           url: archives
-          weight: 2
+          weight: 1
         - name: Search
           url: search/
           weight: 2
@@ -52,15 +49,12 @@ languages:
       series: series
     menu:
       main:
-        - name: 主页
-          url: about
-          weight: 1
         - name: 文章
           url: archives/
-          weight: 2
+          weight: 1
         - name: 搜索
           url: search/
-          weight: 3
+          weight: 2
     params:
       languageAltTitle: 中文
 
