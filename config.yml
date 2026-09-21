@@ -32,7 +32,7 @@ languages:
       series: series
     menu:
       main:
-        - name: About
+        - name: Home
           url: about
           weight: 1
         - name: Articles
@@ -52,7 +52,7 @@ languages:
       series: series
     menu:
       main:
-        - name: 关于
+        - name: 主页
           url: about
           weight: 1
         - name: 文章

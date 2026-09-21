@@ -43,6 +43,13 @@ iframe {
     margin: auto var(--gap) auto auto;
 }
 
+.page-title-icon {
+    width: 0.8em;
+    height: 0.8em;
+    margin-inline-start: 6px;
+    vertical-align: -0.08em;
+}
+
 .nav-switches {
     display: inline-flex;
     align-items: center;
