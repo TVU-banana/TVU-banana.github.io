@@ -29,7 +29,7 @@ iframe {
     inset: 0 0 auto;
     z-index: 100;
     min-height: var(--fixed-header-height);
-    font-family: "Songti SC", "STSong", "SimSun", serif;
+    font-family: "Avenir Next", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
     background: color-mix(in srgb, var(--theme) 60%, transparent);
     border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
     backdrop-filter: blur(16px) saturate(160%);
