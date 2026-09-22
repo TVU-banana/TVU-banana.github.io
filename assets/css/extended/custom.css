@@ -418,7 +418,19 @@ body.dark .theme-icon-moon {
         padding: 16px;
     }
 
-    .archive-card-title {
-        font-size: 20px;
-    }
+.archive-card-title {
+    font-size: 20px;
+}
+
+/* Keep article copy orderly while allowing code and media to retain their own layout. */
+.post-content p,
+.post-content li {
+    text-align: justify;
+    text-justify: inter-ideograph;
+}
+
+/* Markdown tables should align with the article column instead of their content width. */
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) {
+    width: 100%;
+}
 }

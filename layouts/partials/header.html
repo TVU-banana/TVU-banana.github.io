@@ -44,10 +44,16 @@
     <div class="nav-switches">
       {{- $currentLang := .Lang }}
       <ul class="lang-switch {{ if eq $currentLang "zh" }}is-zh{{ else }}is-en{{ end }}" aria-label="Language">
-        {{- range .AllTranslations }}
-        {{- $label := cond (eq .Lang "zh") "中" "EN" }}
-        <li{{ if eq $currentLang .Lang }} class="is-active"{{ end }}>
-          <a href="{{ .Permalink }}" data-lang="{{ .Lang }}" title="{{ .Language.Params.languageAltTitle | default .Language.Label }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.Label }}"{{ if eq $currentLang .Lang }} aria-current="page"{{ end }}>{{ $label }}</a>
+        {{- range site.Languages }}
+        {{- $language := . }}
+        {{- $label := cond (eq $language.Lang "zh") "中" "EN" }}
+        {{- $fallback := cond (eq $language.Lang "zh") "/zh/" "/" }}
+        {{- $href := $fallback }}
+        {{- range where $.AllTranslations "Lang" $language.Lang }}
+          {{- $href = .Permalink }}
+        {{- end }}
+        <li{{ if eq $currentLang $language.Lang }} class="is-active"{{ end }}>
+          <a href="{{ $href }}" data-lang="{{ $language.Lang }}" title="{{ $language.Params.languageAltTitle | default $language.Label }}" aria-label="{{ $language.Params.languageAltTitle | default $language.Label }}"{{ if eq $currentLang $language.Lang }} aria-current="page"{{ end }}>{{ $label }}</a>
         </li>
         {{- end }}
       </ul>
