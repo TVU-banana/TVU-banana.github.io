@@ -97,6 +97,17 @@ iframe {
     transform: translateX(100%);
 }
 
+/* Keep the dark-mode control tactile without a bright halo. */
+.dark .nav-switches .lang-switch {
+    box-shadow: inset 0 1px 2px color-mix(in srgb, var(--primary) 10%, transparent),
+        0 1px 3px color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.dark .nav-switches .lang-switch::before {
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--primary) 12%, transparent),
+        inset 0 1px 1px color-mix(in srgb, white 28%, transparent);
+}
+
 .nav-switches .lang-switch li {
     display: flex;
     position: relative;
