@@ -44,6 +44,14 @@ iframe {
     margin: auto var(--gap) auto auto;
 }
 
+.logo a {
+    font-size: 32px;
+}
+
+.nav #menu a {
+    font-size: 24px;
+}
+
 .nav-switches {
     display: inline-flex;
     align-items: center;
@@ -62,7 +70,7 @@ iframe {
 
 .nav-switches .lang-switch a {
     margin: auto 3px;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 500;
 }
 
@@ -312,7 +320,7 @@ body.dark .theme-icon-moon {
     }
 
     .logo a {
-        font-size: 18px;
+        font-size: 32px;
         white-space: nowrap;
     }
 
@@ -329,7 +337,7 @@ body.dark .theme-icon-moon {
     }
 
     #menu a {
-        font-size: 14px;
+        font-size: 24px;
     }
 
     .nav-switches {
