@@ -42,18 +42,15 @@
     </ul>
 
     <div class="nav-switches">
-      {{- $lang := .Lang }}
-      {{- with .Translations }}
-      <ul class="lang-switch" aria-label="Language">
-        {{- range . }}
-        {{- if ne $lang .Lang }}
-        <li>
-          <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default .Language.Label }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.Label }}">{{ .Language.Label }}</a>
+      {{- $currentLang := .Lang }}
+      <ul class="lang-switch {{ if eq $currentLang "zh" }}is-zh{{ else }}is-en{{ end }}" aria-label="Language">
+        {{- range .AllTranslations }}
+        {{- $label := cond (eq .Lang "zh") "中" "EN" }}
+        <li{{ if eq $currentLang .Lang }} class="is-active"{{ end }}>
+          <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default .Language.Label }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.Label }}"{{ if eq $currentLang .Lang }} aria-current="page"{{ end }}>{{ $label }}</a>
         </li>
         {{- end }}
-        {{- end }}
       </ul>
-      {{- end }}
 
       {{- if not site.Params.disableThemeToggle }}
       <button id="theme-toggle" accesskey="t" title="Toggle theme (Alt + T)" aria-label="Toggle theme" aria-pressed="false">
