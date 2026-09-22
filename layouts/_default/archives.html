@@ -32,9 +32,9 @@
   all-language collection, then keep one canonical entry per post so the
   Chinese and English archive pages cannot drift apart.
 */}}
-{{- $pages := where site.Pages "Type" "in" site.Params.mainSections }}
+{{- $pages := where site.AllPages "Type" "in" site.Params.mainSections }}
 {{- if site.Params.ShowAllPagesInArchive }}
-{{- $pages = where site.Pages "Kind" "page" }}
+{{- $pages = where site.AllPages "Kind" "page" }}
 {{- end }}
 {{- $pages = where $pages "Lang" site.Params.canonicalContentLanguage }}
 
