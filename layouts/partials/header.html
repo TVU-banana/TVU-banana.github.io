@@ -47,7 +47,7 @@
         {{- range .AllTranslations }}
         {{- $label := cond (eq .Lang "zh") "中" "EN" }}
         <li{{ if eq $currentLang .Lang }} class="is-active"{{ end }}>
-          <a href="{{ .Permalink }}" title="{{ .Language.Params.languageAltTitle | default .Language.Label }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.Label }}"{{ if eq $currentLang .Lang }} aria-current="page"{{ end }}>{{ $label }}</a>
+          <a href="{{ .Permalink }}" data-lang="{{ .Lang }}" title="{{ .Language.Params.languageAltTitle | default .Language.Label }}" aria-label="{{ .Language.Params.languageAltTitle | default .Language.Label }}"{{ if eq $currentLang .Lang }} aria-current="page"{{ end }}>{{ $label }}</a>
         </li>
         {{- end }}
       </ul>
@@ -69,3 +69,25 @@
     </div>
   </nav>
 </header>
+
+<script>
+  document.querySelectorAll(".lang-switch a[data-lang]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+
+      const switcher = link.closest(".lang-switch");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!switcher || reducedMotion) {
+        return;
+      }
+
+      event.preventDefault();
+      switcher.classList.toggle("is-en", link.dataset.lang === "en");
+      switcher.classList.toggle("is-zh", link.dataset.lang === "zh");
+      window.setTimeout(() => { window.location.href = link.href; }, 240);
+    });
+  });
+</script>
