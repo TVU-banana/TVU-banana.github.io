@@ -49,7 +49,7 @@ iframe {
 }
 
 .nav #menu a {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .nav-switches {
@@ -63,11 +63,11 @@ iframe {
     position: relative;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: 112px;
-    height: 52px;
+    width: 88px;
+    height: 38px;
     box-sizing: border-box;
     margin: auto 8px;
-    padding: 4px;
+    padding: 3px;
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--border) 88%, var(--primary));
     border-radius: 999px;
@@ -78,10 +78,10 @@ iframe {
 
 .nav-switches .lang-switch::before {
     position: absolute;
-    top: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
-    height: calc(100% - 8px);
+    top: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    height: calc(100% - 6px);
     border-radius: 999px;
     background: linear-gradient(145deg, color-mix(in srgb, var(--theme) 98%, white), color-mix(in srgb, var(--theme) 78%, var(--tertiary)));
     box-shadow: 0 3px 6px color-mix(in srgb, var(--primary) 22%, transparent), inset 0 1px 1px color-mix(in srgb, white 72%, transparent);
@@ -90,27 +90,30 @@ iframe {
     transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.nav-switches .lang-switch.is-en::before {
+.nav-switches .lang-switch.is-zh::before {
     transform: translateX(100%);
 }
 
 .nav-switches .lang-switch li {
-    display: inline-flex;
+    display: flex;
     position: relative;
     z-index: 1;
     min-width: 0;
     margin: 0;
+    align-items: center;
 }
 
 .nav-switches .lang-switch a {
-    display: inline-flex;
+    display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
     justify-content: center;
     margin: 0;
-    font-size: 24px;
+    padding: 0;
+    font-size: 20px;
     font-weight: 500;
+    line-height: 1;
     color: var(--secondary);
     transition: color 180ms ease-out;
 }
@@ -384,7 +387,7 @@ body.dark .theme-icon-moon {
     }
 
     #menu a {
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .nav-switches {
