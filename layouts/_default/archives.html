@@ -27,10 +27,16 @@
   {{- end }}
 </header>
 
-{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{/*
+  Archives are shared by both language routes. Build the list from Hugo's
+  all-language collection, then keep one canonical entry per post so the
+  Chinese and English archive pages cannot drift apart.
+*/}}
+{{- $pages := where site.AllPages "Type" "in" site.Params.mainSections }}
 {{- if site.Params.ShowAllPagesInArchive }}
-{{- $pages = site.RegularPages }}
+{{- $pages = where site.AllPages "Kind" "page" }}
 {{- end }}
+{{- $pages = where $pages "Lang" site.Params.canonicalContentLanguage }}
 
 <div class="archive-list">
   {{- range $pages.GroupByPublishDate "2006" }}
