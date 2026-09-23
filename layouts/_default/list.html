@@ -59,6 +59,9 @@
 {{- $paginator := .Paginate $pages $pageSize }}
 
 {{- $term := .Data.Term }}
+{{- if $.IsHome }}
+<div class="archive-posts home-posts">
+{{- end }}
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
@@ -99,6 +102,9 @@
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
 {{- end }}
+{{- end }}
+{{- if $.IsHome }}
+</div>
 {{- end }}
 
 {{- if gt $paginator.TotalPages 1 }}

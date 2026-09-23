@@ -296,6 +296,10 @@ body.dark .theme-icon-moon {
     gap: 12px;
 }
 
+.home-posts {
+    margin-top: 12px;
+}
+
 .archive-card {
     position: relative;
     isolation: isolate;
@@ -345,6 +349,35 @@ body.dark .theme-icon-moon {
 
 .archive-card-tags {
     overflow-wrap: anywhere;
+}
+
+.post-byline {
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 6px;
+}
+
+.post-meta-tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.post-meta-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 7px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--code-bg);
+    color: var(--secondary);
+    font-size: inherit;
+    line-height: 1.35;
+    text-decoration: none;
+}
+
+.post-meta-tag:hover {
+    background: var(--border);
 }
 
 /* Keep the full-card link above decorative text layers so every point is clickable. */
