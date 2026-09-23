@@ -96,7 +96,7 @@
       menuItems.forEach((link) => {
         const label = link.querySelector("[data-menu-label]");
         if (!label) return;
-        const text = label.dataset[`label${language.toUpperCase()}`];
+        const text = language === "en" ? label.dataset.labelEn : label.dataset.labelZh;
         if (!text) return;
         label.textContent = text;
         link.setAttribute("aria-label", text);
