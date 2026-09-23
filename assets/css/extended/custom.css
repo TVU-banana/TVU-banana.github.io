@@ -117,7 +117,7 @@ iframe {
     align-items: center;
 }
 
-.nav-switches .lang-switch a {
+.nav-switches .lang-switch button {
     display: flex;
     width: 100%;
     height: 100%;
@@ -129,10 +129,11 @@ iframe {
     font-weight: 500;
     line-height: 1;
     color: var(--secondary);
+    cursor: pointer;
     transition: color 180ms ease-out;
 }
 
-.nav-switches .lang-switch li.is-active a {
+.nav-switches .lang-switch li.is-active button {
     color: var(--primary);
 }
 
@@ -201,7 +202,7 @@ body.dark .theme-icon-moon {
     .theme-icon-sun,
     .theme-icon-moon,
     .nav-switches .lang-switch::before,
-    .nav-switches .lang-switch a {
+    .nav-switches .lang-switch button {
         transition: none;
     }
 }

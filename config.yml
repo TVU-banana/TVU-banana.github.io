@@ -33,9 +33,11 @@ languages:
     menu:
       main:
         - name: Articles
+          identifier: articles
           url: archives
           weight: 1
         - name: Search
+          identifier: search
           url: search/
           weight: 2
 
@@ -50,9 +52,11 @@ languages:
     menu:
       main:
         - name: 文章
+          identifier: articles
           url: archives/
           weight: 1
         - name: 搜索
+          identifier: search
           url: search/
           weight: 2
     params:
@@ -78,6 +82,7 @@ params:
   author: TVU-banana
   # Posts are authored once in the canonical language and shown in both archives.
   canonicalContentLanguage: en
+  homePageSize: 5
   # author: ["Me", "You"] # multiple authors
 
   defaultTheme: auto

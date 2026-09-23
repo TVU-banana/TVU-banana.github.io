@@ -1,0 +1,21 @@
+{{- $page := . -}}
+<article class="archive-card">
+  <h3 class="archive-card-title entry-hint-parent">{{ $page.Title | markdownify }}</h3>
+  <div class="archive-card-meta">
+    {{- if not $page.Date.IsZero }}
+    <time datetime="{{ $page.Date | time.Format "2006-01-02T15:04:05Z07:00" }}">
+      {{ $page.Date | time.Format (default "January 2, 2006" site.Params.DateFormat) }}
+    </time>
+    {{- end }}
+    {{- with $page.Params.tags }}
+    <span class="archive-card-separator" aria-hidden="true">·</span>
+    <span class="archive-card-tags">
+      {{- range $index, $tag := . }}
+      {{- if $index }}, {{ end -}}
+      {{- $tag -}}
+      {{- end }}
+    </span>
+    {{- end }}
+  </div>
+  <a class="entry-link" aria-label="post link to {{ $page.Title | plainify }}" href="{{ $page.Permalink }}"></a>
+</article>

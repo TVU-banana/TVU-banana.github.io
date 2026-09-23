@@ -41,11 +41,22 @@
 {{- $pages := union .RegularPages .Sections }}
 
 {{- if .IsHome }}
-{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
-{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
+{{- $pages = slice }}
+{{- range hugo.Sites }}
+{{- if eq .Language.Lang site.Params.canonicalContentLanguage }}
+{{- $pages = where .RegularPages "Type" "in" site.Params.mainSections }}
+{{- end }}
+{{- end }}
+{{- $pages = where $pages "Kind" "page" }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- $pages = sort $pages "Date" "desc" }}
 {{- end }}
 
-{{- $paginator := .Paginate $pages }}
+{{- $pageSize := site.Params.pagination.pagerSize | default 3 }}
+{{- if .IsHome }}
+{{- $pageSize = site.Params.homePageSize | default 5 }}
+{{- end }}
+{{- $paginator := .Paginate $pages $pageSize }}
 
 {{- $term := .Data.Term }}
 {{- range $index, $page := $paginator.Pages }}
@@ -56,6 +67,9 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
+{{- if $.IsHome }}
+{{- partial "article_card.html" . }}
+{{- else }}
 <article class="{{ $class }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
@@ -84,6 +98,7 @@
   {{- end }}
   <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
 </article>
+{{- end }}
 {{- end }}
 
 {{- if gt $paginator.TotalPages 1 }}

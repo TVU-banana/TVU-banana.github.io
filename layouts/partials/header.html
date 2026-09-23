@@ -33,9 +33,12 @@
       {{- $menuItemURL := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL)) | absLangURL }}
       {{- $pageURL := $currentPage.Permalink | absLangURL }}
       {{- $isSearch := eq (site.GetPage .KeyName).Layout "search" }}
+      {{- $labels := index hugo.Data.navlabels .Identifier }}
+      {{- $labelEn := index $labels "en" | default .Name }}
+      {{- $labelZh := index $labels "zh" | default .Name }}
       <li>
-        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}{{ cond $isSearch " (Alt + /)" "" }}"{{ if $isSearch }} accesskey="/"{{ end }}>
-          <span{{ if eq $menuItemURL $pageURL }} class="active"{{ end }}>{{ .Pre }}{{ .Name }}{{ .Post }}</span>
+        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}{{ cond $isSearch " (Alt + /)" "" }}" aria-label="{{ .Title | default .Name }}" data-menu-shortcut="{{ cond $isSearch " (Alt + /)" "" }}"{{ if $isSearch }} accesskey="/"{{ end }}>
+          <span data-menu-label data-label-en="{{ $labelEn }}" data-label-zh="{{ $labelZh }}"{{ if eq $menuItemURL $pageURL }} class="active"{{ end }}>{{ .Pre }}{{ .Name }}{{ .Post }}</span>
         </a>
       </li>
       {{- end }}
@@ -43,17 +46,12 @@
 
     <div class="nav-switches">
       {{- $currentLang := .Lang }}
-      <ul class="lang-switch {{ if eq $currentLang "zh" }}is-zh{{ else }}is-en{{ end }}" aria-label="Language">
-        {{- range site.Languages }}
-        {{- $language := . }}
+      <ul class="lang-switch {{ if eq $currentLang "zh" }}is-zh{{ else }}is-en{{ end }}" data-page-language="{{ $currentLang }}" aria-label="Language">
+        {{- range hugo.Sites }}
+        {{- $language := .Language }}
         {{- $label := cond (eq $language.Lang "zh") "中" "EN" }}
-        {{- $fallback := cond (eq $language.Lang "zh") "/zh/" "/" }}
-        {{- $href := $fallback }}
-        {{- range where $.AllTranslations "Lang" $language.Lang }}
-          {{- $href = .Permalink }}
-        {{- end }}
         <li{{ if eq $currentLang $language.Lang }} class="is-active"{{ end }}>
-          <a href="{{ $href }}" data-lang="{{ $language.Lang }}" title="{{ $language.Params.languageAltTitle | default $language.Label }}" aria-label="{{ $language.Params.languageAltTitle | default $language.Label }}"{{ if eq $currentLang $language.Lang }} aria-current="page"{{ end }}>{{ $label }}</a>
+          <button type="button" data-lang="{{ $language.Lang }}" title="{{ $language.Params.languageAltTitle | default $language.Label }}" aria-label="{{ $language.Params.languageAltTitle | default $language.Label }}" aria-pressed="{{ eq $currentLang $language.Lang }}">{{ $label }}</button>
         </li>
         {{- end }}
       </ul>
@@ -77,23 +75,52 @@
 </header>
 
 <script>
-  document.querySelectorAll(".lang-switch a[data-lang]").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-        return;
+  const languageSwitch = document.querySelector(".lang-switch");
+
+  if (languageSwitch) {
+    const languageOptions = [...languageSwitch.querySelectorAll("button[data-lang]")];
+    const menuItems = [...document.querySelectorAll("#menu a")];
+
+    const setMenuLanguage = (language) => {
+      if (language !== "en" && language !== "zh") return;
+
+      languageSwitch.classList.toggle("is-en", language === "en");
+      languageSwitch.classList.toggle("is-zh", language === "zh");
+
+      languageOptions.forEach((option) => {
+        const isActive = option.dataset.lang === language;
+        option.closest("li").classList.toggle("is-active", isActive);
+        option.setAttribute("aria-pressed", String(isActive));
+      });
+
+      menuItems.forEach((link) => {
+        const label = link.querySelector("[data-menu-label]");
+        if (!label) return;
+        const text = label.dataset[`label${language.toUpperCase()}`];
+        if (!text) return;
+        label.textContent = text;
+        link.setAttribute("aria-label", text);
+        link.title = `${text}${link.dataset.menuShortcut || ""}`;
+      });
+
+      try {
+        localStorage.setItem("menu-language", language);
+      } catch (_) {
+        // The current page still updates if browser storage is unavailable.
       }
+    };
 
-      const switcher = link.closest(".lang-switch");
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let initialLanguage = languageSwitch.dataset.pageLanguage;
+    try {
+      const savedLanguage = localStorage.getItem("menu-language");
+      if (savedLanguage === "en" || savedLanguage === "zh") initialLanguage = savedLanguage;
+    } catch (_) {
+      // Fall back to the language of the current page.
+    }
+    setMenuLanguage(initialLanguage);
 
-      if (!switcher || reducedMotion) {
-        return;
-      }
-
-      event.preventDefault();
-      switcher.classList.toggle("is-en", link.dataset.lang === "en");
-      switcher.classList.toggle("is-zh", link.dataset.lang === "zh");
-      window.setTimeout(() => { window.location.href = link.href; }, 240);
+    languageOptions.forEach((option) => {
+      option.addEventListener("click", () => setMenuLanguage(option.dataset.lang));
     });
-  });
+  }
 </script>
