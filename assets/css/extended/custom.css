@@ -441,7 +441,15 @@ body.dark .theme-icon-moon {
     text-justify: inter-ideograph;
 }
 
-/* Markdown tables should align with the article column instead of their content width. */
+/* Restore native table layout so its visible rows fill the article column. */
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) {
+    display: table;
     width: 100%;
+    table-layout: fixed;
+}
+
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) th,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
+    overflow-wrap: anywhere;
+    word-break: normal;
 }
