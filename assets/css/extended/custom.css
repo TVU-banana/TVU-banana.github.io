@@ -357,6 +357,19 @@ body.dark .theme-icon-moon {
     row-gap: 6px;
 }
 
+/* Keep the byline equally spaced from the title and article body. */
+.post-header {
+    margin-bottom: 12px;
+}
+
+.post-header .post-title {
+    margin-bottom: 0;
+}
+
+.post-header .post-meta {
+    margin-top: 12px;
+}
+
 .post-meta-tags {
     display: inline-flex;
     flex-wrap: wrap;
