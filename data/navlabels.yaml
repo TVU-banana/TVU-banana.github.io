@@ -4,3 +4,9 @@ articles:
 search:
   en: Search
   zh: 搜索
+published:
+  en: "Published:"
+  zh: "发布于："
+revised:
+  en: "Revised:"
+  zh: "修订于："

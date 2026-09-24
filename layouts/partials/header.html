@@ -80,6 +80,7 @@
   if (languageSwitch) {
     const languageOptions = [...languageSwitch.querySelectorAll("button[data-lang]")];
     const menuItems = [...document.querySelectorAll("#menu a")];
+    const languageLabels = [...document.querySelectorAll("[data-language-label]")];
 
     const setMenuLanguage = (language) => {
       if (language !== "en" && language !== "zh") return;
@@ -101,6 +102,11 @@
         label.textContent = text;
         link.setAttribute("aria-label", text);
         link.title = `${text}${link.dataset.menuShortcut || ""}`;
+      });
+
+      languageLabels.forEach((label) => {
+        const text = language === "en" ? label.dataset.labelEn : label.dataset.labelZh;
+        if (text) label.textContent = text;
       });
 
       try {

@@ -360,6 +360,7 @@ body.dark .theme-icon-moon {
 .post-date-group {
     display: inline-flex;
     align-items: baseline;
+    gap: 0.25em;
     white-space: nowrap;
 }
 

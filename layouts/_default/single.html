@@ -21,14 +21,15 @@
     <div class="post-meta post-byline">
       {{- $publishedDate := .Date | time.Format "2006-01-02" -}}
       {{- $revisedDate := .Lastmod | time.Format "2006-01-02" -}}
+      {{- $dateLabels := hugo.Data.navlabels -}}
       <span class="post-date-group post-date-published">
-        <span class="post-date-label">{{ i18n "published" }}</span>
+        <span class="post-date-label" data-language-label data-label-en="{{ (index $dateLabels "published").en }}" data-label-zh="{{ (index $dateLabels "published").zh }}">{{ (index $dateLabels "published").en }}</span>
         <time datetime="{{ .Date | time.Format "2006-01-02T15:04:05Z07:00" }}">{{ $publishedDate }}&nbsp;&nbsp;{{ .Date | time.Format "Monday" }}</time>
       </span>
       {{- if and (.Lastmod.After .Date) (ne $revisedDate $publishedDate) }}
       <span class="post-date-separator" aria-hidden="true">·</span>
       <span class="post-date-group post-date-revised">
-        <span class="post-date-label">{{ i18n "revised" }}</span>
+        <span class="post-date-label" data-language-label data-label-en="{{ (index $dateLabels "revised").en }}" data-label-zh="{{ (index $dateLabels "revised").zh }}">{{ (index $dateLabels "revised").en }}</span>
         <time datetime="{{ .Lastmod | time.Format "2006-01-02T15:04:05Z07:00" }}">{{ $revisedDate }}&nbsp;&nbsp;{{ .Lastmod | time.Format "Monday" }}</time>
       </span>
       {{- end }}
