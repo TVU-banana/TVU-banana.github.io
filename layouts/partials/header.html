@@ -80,7 +80,6 @@
   if (languageSwitch) {
     const languageOptions = [...languageSwitch.querySelectorAll("button[data-lang]")];
     const menuItems = [...document.querySelectorAll("#menu a")];
-    const languageLabels = [...document.querySelectorAll("[data-language-label]")];
 
     const setMenuLanguage = (language) => {
       if (language !== "en" && language !== "zh") return;
@@ -104,6 +103,7 @@
         link.title = `${text}${link.dataset.menuShortcut || ""}`;
       });
 
+      const languageLabels = [...document.querySelectorAll("[data-language-label]")];
       languageLabels.forEach((label) => {
         const text = language === "en" ? label.dataset.labelEn : label.dataset.labelZh;
         if (text) label.textContent = text;
@@ -123,7 +123,12 @@
     } catch (_) {
       // Fall back to the language of the current page.
     }
-    setMenuLanguage(initialLanguage);
+    const applyInitialLanguage = () => setMenuLanguage(initialLanguage);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", applyInitialLanguage, { once: true });
+    } else {
+      applyInitialLanguage();
+    }
 
     languageOptions.forEach((option) => {
       option.addEventListener("click", () => setMenuLanguage(option.dataset.lang));
