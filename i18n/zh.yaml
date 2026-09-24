@@ -1,2 +1,6 @@
 - id: browse_tags
   translation: "按标签浏览"
+- id: published
+  translation: "发布于："
+- id: revised
+  translation: "修订于："

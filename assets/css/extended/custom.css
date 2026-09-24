@@ -357,6 +357,24 @@ body.dark .theme-icon-moon {
     row-gap: 6px;
 }
 
+.post-date-group {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+}
+
+.post-date-label {
+    font-weight: 500;
+}
+
+.post-date-revised {
+    color: var(--secondary);
+}
+
+.post-date-separator {
+    color: var(--secondary);
+}
+
 /* Keep the byline equally spaced from the title and article body. */
 .post-header {
     margin-bottom: 12px;

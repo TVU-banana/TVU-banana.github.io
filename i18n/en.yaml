@@ -1,2 +1,6 @@
 - id: browse_tags
   translation: "Browse by tag"
+- id: published
+  translation: "Published:"
+- id: revised
+  translation: "Revised:"
