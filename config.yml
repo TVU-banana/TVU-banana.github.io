@@ -78,6 +78,8 @@ outputs:
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  goatcounter:
+    code: "diki-blog"
   description: "DiKi personal blog"
   author: TVU-banana
   # Posts are authored once in the canonical language and shown in both archives.
