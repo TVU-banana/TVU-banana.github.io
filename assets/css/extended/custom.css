@@ -376,6 +376,11 @@ body.dark .theme-icon-moon {
     color: var(--secondary);
 }
 
+/* Give navigation cards equal breathing room above and below their text. */
+.paginav a {
+    padding-block: 14px;
+}
+
 /* Keep the byline equally spaced from the title and article body. */
 .post-header {
     margin-bottom: 12px;
