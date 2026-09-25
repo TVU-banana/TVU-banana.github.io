@@ -27,18 +27,17 @@
       {{- end }}
     </div>
 
-    {{- $currentPage := . }}
     <ul id="menu">
       {{- range site.Menus.main }}
-      {{- $menuItemURL := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL)) | absLangURL }}
-      {{- $pageURL := $currentPage.Permalink | absLangURL }}
+      {{- /* The active menu item is highlighted by the script below so the
+             header stays page-independent and can be cached per language. */ -}}
       {{- $isSearch := eq (site.GetPage .KeyName).Layout "search" }}
       {{- $labels := index hugo.Data.navlabels .Identifier }}
       {{- $labelEn := index $labels "en" | default .Name }}
       {{- $labelZh := index $labels "zh" | default .Name }}
       <li>
         <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}{{ cond $isSearch " (Alt + /)" "" }}" aria-label="{{ .Title | default .Name }}" data-menu-shortcut="{{ cond $isSearch " (Alt + /)" "" }}"{{ if $isSearch }} accesskey="/"{{ end }}>
-          <span data-menu-label data-label-en="{{ $labelEn }}" data-label-zh="{{ $labelZh }}"{{ if eq $menuItemURL $pageURL }} class="active"{{ end }}>{{ .Pre }}{{ .Name }}{{ .Post }}</span>
+          <span data-menu-label data-label-en="{{ $labelEn }}" data-label-zh="{{ $labelZh }}">{{ .Pre }}{{ .Name }}{{ .Post }}</span>
         </a>
       </li>
       {{- end }}
@@ -116,6 +115,21 @@
       }
     };
 
+    const applyActiveMenu = () => {
+      const pagePath = window.location.pathname;
+      menuItems.forEach((link) => {
+        const label = link.querySelector("[data-menu-label]");
+        if (!label) return;
+        let linkPath = "";
+        try {
+          linkPath = new URL(link.href, window.location.origin).pathname;
+        } catch (_) {
+          return;
+        }
+        label.classList.toggle("active", linkPath === pagePath);
+      });
+    };
+
     let initialLanguage = languageSwitch.dataset.pageLanguage;
     try {
       const savedLanguage = localStorage.getItem("menu-language");
@@ -123,11 +137,14 @@
     } catch (_) {
       // Fall back to the language of the current page.
     }
-    const applyInitialLanguage = () => setMenuLanguage(initialLanguage);
+    const applyInitialState = () => {
+      setMenuLanguage(initialLanguage);
+      applyActiveMenu();
+    };
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", applyInitialLanguage, { once: true });
+      document.addEventListener("DOMContentLoaded", applyInitialState, { once: true });
     } else {
-      applyInitialLanguage();
+      applyInitialState();
     }
 
     languageOptions.forEach((option) => {
