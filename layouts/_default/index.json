@@ -1,0 +1,15 @@
+{{- /* Search index built from the canonical content language so the EN and ZH
+       search pages query the same post collection. */ -}}
+{{- $pages := slice -}}
+{{- range hugo.Sites -}}
+{{- if eq .Language.Lang site.Params.canonicalContentLanguage -}}
+{{- $pages = .RegularPages -}}
+{{- end -}}
+{{- end -}}
+{{- $.Scratch.Add "index" slice -}}
+{{- range $pages -}}
+    {{- if and (not .Params.searchHidden) (ne .Layout `archives`) (ne .Layout `search`) }}
+    {{- $.Scratch.Add "index" (dict "title" .Title "content" .Plain "permalink" .Permalink "summary" .Summary) -}}
+    {{- end }}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}
