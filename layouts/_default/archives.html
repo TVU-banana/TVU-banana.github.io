@@ -32,11 +32,16 @@
   all-language collection, then keep one canonical entry per post so the
   Chinese and English archive pages cannot drift apart.
 */}}
-{{- $pages := where site.AllPages "Type" "in" site.Params.mainSections }}
+{{- /* site.AllPages is deprecated; select the canonical language site directly. */ -}}
+{{- $pages := slice }}
+{{- range hugo.Sites }}
+{{- if eq .Language.Lang site.Params.canonicalContentLanguage }}
+{{- $pages = where .Pages "Type" "in" site.Params.mainSections }}
 {{- if site.Params.ShowAllPagesInArchive }}
-{{- $pages = where site.AllPages "Kind" "page" }}
+{{- $pages = where .Pages "Kind" "page" }}
 {{- end }}
-{{- $pages = where $pages "Lang" site.Params.canonicalContentLanguage }}
+{{- end }}
+{{- end }}
 
 <div class="archive-list">
   {{- range $pages.GroupByPublishDate "2006" }}
