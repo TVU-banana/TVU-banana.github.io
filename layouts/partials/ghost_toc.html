@@ -1,0 +1,58 @@
+{{- /* Ghost TOC (ChatGPT-style): collapsed outline fixed on the right,
+       expands into a rounded panel on hover, capsule highlight per item.
+       The skeleton bars mirror the real H1-H3 outline: one bar per heading,
+       width by heading level. */ -}}
+{{- $headings := findRE `<h[1-3][^>]*>` .Content }}
+{{- if and (.Param "ShowToc") (gt (len $headings) 0) }}
+<nav class="ghost-toc" data-ghost-toc aria-label="{{ i18n "toc" | default "Table of Contents" }}">
+    <div class="ghost-toc-panel">
+        <span class="ghost-toc-skeleton" aria-hidden="true">
+            {{- range $headings }}
+            {{- $level := int (index (findRE "[1-3]" . 1) 0) }}
+            <i data-level="{{ $level }}"></i>
+            {{- end }}
+        </span>
+        <div class="ghost-toc-tree">
+            {{- replace (.Fragments.ToHTML 1 3 false) `id="TableOfContents"` "" | safeHTML }}
+        </div>
+    </div>
+</nav>
+<script>
+(function () {
+    var nav = document.querySelector('[data-ghost-toc]');
+    if (!nav) return;
+    var items = [];
+    nav.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        var id = decodeURIComponent(link.hash.slice(1));
+        var heading = id && document.getElementById(id);
+        if (heading) items.push({ id: id, link: link, heading: heading });
+    });
+    if (!items.length) return;
+    var activeId = null;
+    function setActive(id) {
+        if (id === activeId) return;
+        activeId = id;
+        items.forEach(function (item) {
+            item.link.classList.toggle('is-active', item.id === id);
+        });
+    }
+    function update() {
+        var line = window.innerHeight * 0.35;
+        var current = items[0].id;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].heading.getBoundingClientRect().top <= line) current = items[i].id;
+            else break;
+        }
+        setActive(current);
+    }
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(function () { update(); ticking = false; });
+        }
+    }, { passive: true });
+    update();
+})();
+</script>
+{{- end }}

@@ -386,6 +386,12 @@ body.dark .theme-icon-moon {
     margin-bottom: 12px;
 }
 
+/* Equalize spacing above and below the inline table of contents:
+   its top margin collapses with .post-header's, so both gaps are 24px. */
+.toc {
+    margin: 24px 2px;
+}
+
 .post-header .post-title {
     margin-bottom: 0;
 }
