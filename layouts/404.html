@@ -1,0 +1,59 @@
+{{- /* Site override of the theme 404 page. Adds a self-heal script:
+       1. Strays copied from chat/Markdown links (e.g. a trailing ")" or "）")
+          are stripped and the cleaned URL is restored, so malformed links
+          stop landing on a permanent 404.
+       2. Transient 404s (GitHub Pages deploy window, stale browser cache)
+          revalidate the URL against the origin and reload automatically.
+       Both paths are one-shot and cannot loop: the cleaned URL no longer
+       ends with a stray character, and the reload only fires when the
+       origin confirms the URL now returns content. */ -}}
+{{- define "main" }}
+<div class="not-found">404</div>
+<script>
+(function () {
+    var STRAY_TAIL = /[)\]】》」』）＞｝>,.;:!?、。！？：；]+$/;
+    var RETRY_DELAY_MS = 1500;
+    var RETRY_THROTTLE_MS = 30000;
+    var THROTTLE_KEY = "not-found-retry-at";
+
+    var path = window.location.pathname;
+    var decoded = path;
+    try {
+        decoded = decodeURIComponent(path);
+    } catch (_) {
+        // Malformed escapes: fall back to the raw path.
+    }
+    var cleaned = decoded.replace(STRAY_TAIL, "");
+
+    if (cleaned !== decoded) {
+        var target = cleaned === "" ? "/" : cleaned;
+        var encodedPath = target.split("/").map(encodeURIComponent).join("/");
+        window.location.replace(encodedPath + window.location.search + window.location.hash);
+        return;
+    }
+
+    function revalidate() {
+        try {
+            var last = parseInt(sessionStorage.getItem(THROTTLE_KEY) || "0", 10);
+            if (Date.now() - last < RETRY_THROTTLE_MS) return;
+            sessionStorage.setItem(THROTTLE_KEY, String(Date.now()));
+        } catch (_) {
+            // Storage unavailable: proceed, the reload guard still holds.
+        }
+        fetch(window.location.href, { cache: "reload", redirect: "follow" })
+            .then(function (response) {
+                if (response.ok) window.location.reload();
+            })
+            .catch(function () {
+                // Offline or blocked: stay on the 404 page.
+            });
+    }
+
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) setTimeout(revalidate, RETRY_DELAY_MS);
+    });
+
+    setTimeout(revalidate, RETRY_DELAY_MS);
+})();
+</script>
+{{- end }}{{/* end main */ -}}
