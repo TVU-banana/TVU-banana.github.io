@@ -26,23 +26,32 @@
     <ul id="searchResults" aria-label="search results"></ul>
 </div>
 
-{{- with site.GetPage "/tags" -}}
+{{- /* Tags belong to articles, not to a language: read the canonical
+       site's taxonomy so both language versions of Search show the same
+       list. Only the section heading goes through i18n. */ -}}
+{{- $canonicalLang := site.Params.canonicalContentLanguage | default site.Language.Lang }}
+{{- $canonicalSite := site }}
+{{- range hugo.Sites }}
+    {{- if eq .Language.Lang $canonicalLang }}{{ $canonicalSite = . }}{{ end }}
+{{- end }}
+{{- with $canonicalSite.GetPage "/tags" -}}
     {{- with .Data.Terms.Alphabetical }}
+    {{- /* Re-sort by the term URL (pure ASCII) so both language renders
+           share one deterministic order, free of locale collation. */ -}}
+    {{- $entries := slice }}
+    {{- range . }}
+        {{- $entries = $entries | append (dict "name" .Name "count" .Count "url" .Page.Permalink) }}
+    {{- end }}
     <section class="search-tags" aria-labelledby="search-tags-title">
         <h2 id="search-tags-title">{{ i18n "browse_tags" | default "Browse by tag" }}</h2>
         <ul class="search-tags-list">
-            {{- $type := "tags" }}
-            {{- range . }}
-                {{- $name := .Name }}
-                {{- $count := .Count }}
-                {{- with site.GetPage (printf "/%s/%s" $type $name) }}
+            {{- range sort $entries "url" "asc" }}
                 <li>
-                    <a href="{{ .Permalink }}" aria-label="{{ .Name }} ({{ $count }})">
-                        <span>{{ .Name }}</span>
-                        <sup>{{ $count }}</sup>
+                    <a href="{{ .url }}" aria-label="{{ .name }} ({{ .count }})">
+                        <span>{{ .name }}</span>
+                        <sup>{{ .count }}</sup>
                     </a>
                 </li>
-                {{- end }}
             {{- end }}
         </ul>
     </section>
