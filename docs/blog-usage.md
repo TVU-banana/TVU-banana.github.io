@@ -46,7 +46,7 @@ draft: false
 - `date` 保留首次发布时间；文章发生实质性修改时增加或更新 `lastmod`，不要覆盖原来的 `date`；
 - 没有被设置为隐藏。
 
-注意：当前 GitHub Pages 工作流带有 `--buildDrafts`，所以 `draft: true` 的文件也会被部署。不要把尚未准备公开的草稿放在会被推送的内容目录中，或在以后调整工作流的草稿策略。
+注意：GitHub Pages 工作流不构建草稿，`draft: true` 的文件不会被部署。尚未准备公开的文章保持 `draft: true` 即可，发布时改为 `draft: false`。
 
 文章的 `tags` 不需要单独建文件。Tags 页面会自动从文章 Front Matter 中的 `tags` 字段生成。
 
