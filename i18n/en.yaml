@@ -1,2 +1,20 @@
 - id: browse_tags
   translation: "Browse by tag"
+- id: category_article_one
+  translation: "article"
+- id: category_article_many
+  translation: "articles"
+- id: categories_empty
+  translation: "No categories yet. Add categories to an article to see them here."
+- id: zoom_diagram
+  translation: "Zoom diagram"
+- id: close_diagram
+  translation: "Close"
+- id: code_copy
+  translation: "Copy code"
+- id: code_copied
+  translation: "Copied"
+- id: code_wrap
+  translation: "Wrap lines"
+- id: code_unwrap
+  translation: "Disable line wrapping"

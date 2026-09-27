@@ -1,2 +1,20 @@
 - id: browse_tags
   translation: "按标签浏览"
+- id: category_article_one
+  translation: "篇文章"
+- id: category_article_many
+  translation: "篇文章"
+- id: categories_empty
+  translation: "暂无专栏。给文章添加 categories 字段后会显示在这里。"
+- id: zoom_diagram
+  translation: "放大图表"
+- id: close_diagram
+  translation: "关闭"
+- id: code_copy
+  translation: "复制代码"
+- id: code_copied
+  translation: "已复制"
+- id: code_wrap
+  translation: "自动换行"
+- id: code_unwrap
+  translation: "关闭自动换行"

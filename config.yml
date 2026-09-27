@@ -26,6 +26,9 @@ languages:
   en:
     label: "EN"
     weight: 1
+    params:
+      # Card date format: keep readable month names in English.
+      dateFormat: "January 2, 2006"
     taxonomies:
       category: categories
       tag: tags
@@ -34,12 +37,16 @@ languages:
       main:
         - name: Articles
           identifier: articles
-          url: archives
+          url: archives/
           weight: 1
         - name: Search
           identifier: search
           url: search/
           weight: 2
+        - name: Categories
+          identifier: categories
+          url: categories/
+          weight: 3
 
   zh:
     title: DiKi
@@ -59,8 +66,15 @@ languages:
           identifier: search
           url: search/
           weight: 2
+        - name: 专栏
+          identifier: categories
+          url: categories/
+          weight: 3
     params:
       languageAltTitle: 中文
+      # Card date format: the default "January 2, 2006" would render as
+      # "九月 25, 2026" once Hugo localises the month name.
+      dateFormat: "2006年1月2日"
 
 outputs:
   home:
@@ -81,7 +95,8 @@ params:
 
   defaultTheme: auto
   # disableThemeToggle: true
-  ShowReadingTime: true
+  # This blog does not estimate reading time; cards show date and tags only.
+  ShowReadingTime: false
   # disableSpecial1stPost: true
   displayFullLangName: true
   ShowPostNavLinks: true
@@ -147,6 +162,20 @@ params:
 
 markup:
   goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - - '\['
+              - '\]'
+            - - '$$'
+              - '$$'
+          inline:
+            - - '\('
+              - '\)'
+            - - '$'
+              - '$'
     renderer:
       unsafe: true
   highlight:
@@ -154,7 +183,7 @@ markup:
     # anchorLineNos: true
     # codeFences: true
     # guessSyntax: true
-    # lineNos: true
+    lineNos: inline
     # style: monokai
 
 # privacy:

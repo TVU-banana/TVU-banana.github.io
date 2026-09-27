@@ -19,6 +19,9 @@
   {{- end }}
 {{- else if .IsSection }}
   {{- $pages = .RegularPages }}
+{{- else if eq .Kind "term" }}
+  {{- /* A term page in a non-canonical language mirrors the canonical term feed. */ -}}
+  {{- $pages = partial "term_pages.html" . }}
 {{- else }}
   {{- $pages = .Pages }}
 {{- end }}

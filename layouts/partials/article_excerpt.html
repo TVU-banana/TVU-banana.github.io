@@ -1,0 +1,6 @@
+{{- $excerpt := "" -}}
+{{- with .Summary -}}
+  {{- /* A Mermaid block is diagram source, not article prose. */ -}}
+  {{- $excerpt = replaceRE `(?s)<figure class="mermaid-figure".*?(</figure>|$)` "" . | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- end -}}
+{{- return $excerpt -}}

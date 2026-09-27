@@ -261,6 +261,136 @@ body.dark .theme-icon-moon {
     font-size: 0.75em;
 }
 
+/* Categories are expandable so both language indexes can show canonical posts. */
+.category-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: calc(var(--gap) * 2);
+}
+
+.category-card {
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 4px);
+    background: var(--entry);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 4%, transparent);
+}
+
+.category-card summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    box-sizing: border-box;
+    padding: 18px 20px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.category-card summary::-webkit-details-marker {
+    display: none;
+}
+
+.category-card summary:hover {
+    color: var(--primary);
+}
+
+.category-card summary:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: calc(var(--radius) + 4px);
+}
+
+.category-card-heading {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.category-card-count {
+    margin-inline-start: auto;
+    color: var(--secondary);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.category-card-chevron {
+    display: grid;
+    flex: 0 0 24px;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    color: var(--secondary);
+    transition: transform 180ms ease-out;
+}
+
+.category-card-chevron svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+.category-card[open] .category-card-chevron {
+    transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category-card-chevron {
+        transition: none;
+    }
+}
+
+.category-card-articles {
+    margin: 0;
+    padding: 0 20px 16px;
+    list-style: none;
+}
+
+.category-card-articles li {
+    border-top: 1px solid var(--border);
+    padding: 16px 0;
+}
+
+.category-card-articles li:first-child {
+    border-top-width: 2px;
+}
+
+.category-article-title {
+    margin: 0;
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 650;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.category-article-title a {
+    color: inherit;
+}
+
+.category-article-title a:hover {
+    color: var(--secondary);
+}
+
+.category-article-title a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.category-article-summary {
+    margin-top: 8px;
+}
+
+.category-article-meta {
+    margin-top: 8px;
+}
+
+.categories-empty {
+    margin-top: calc(var(--gap) * 2);
+    color: var(--secondary);
+}
+
 /* Archive: keep the hierarchy to year -> article cards. */
 .archive-list {
     margin-top: calc(var(--gap) * 2);
@@ -303,6 +433,10 @@ body.dark .theme-icon-moon {
 .archive-card {
     position: relative;
     isolation: isolate;
+    /* Grid items default to a content-based minimum width; keeping the card
+       shrinkable means long titles or excerpts can never widen the column and
+       cause sideways scrolling on narrow screens. */
+    min-width: 0;
     margin: 0;
     padding: 18px 20px;
     border: 1px solid var(--border);
@@ -327,11 +461,35 @@ body.dark .theme-icon-moon {
 .archive-card-title {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    column-gap: 16px;
+    row-gap: 2px;
     margin: 0;
     color: var(--primary);
     font-size: 22px;
     font-weight: 650;
     line-height: 1.35;
+}
+
+.archive-card-heading {
+    min-width: 0;
+}
+
+/* Excerpt of the article body, capped at two lines so every card keeps the same rhythm. */
+.archive-card-summary {
+    position: relative;
+    z-index: 1;
+    margin: 10px 0 0;
+    color: var(--secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 
 .archive-card-meta {
@@ -394,7 +552,23 @@ body.dark .theme-icon-moon {
 
 .post-header .post-title {
     margin-bottom: 0;
+    font-size: 36px;
 }
+
+/* The existing heading anchor supplies the first # on hover. */
+.post-content h1 { font-size: 32px; }
+.post-content h2 { font-size: 27px; }
+
+.post-content :is(h1, h2, h3, h4, h5, h6):hover .anchor {
+    opacity: 0.55;
+    white-space: nowrap;
+}
+
+.post-content h2 .anchor::after { content: "#"; }
+.post-content h3 .anchor::after { content: "##"; }
+.post-content h4 .anchor::after { content: "###"; }
+.post-content h5 .anchor::after { content: "####"; }
+.post-content h6 .anchor::after { content: "#####"; }
 
 .post-header .post-meta {
     margin-top: 12px;
@@ -509,6 +683,83 @@ body.dark .theme-icon-moon {
     .archive-card-title {
         font-size: 20px;
     }
+
+    .archive-card-summary {
+        font-size: 14px;
+    }
+
+    /* Step the title down on narrow screens so long CJK titles stay readable. */
+    .post-header .post-title {
+        font-size: 24px;
+        line-height: 1.25;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .nav > .logo {
+        margin-inline-end: 4px;
+    }
+
+    .logo a {
+        font-size: 24px;
+    }
+
+    #menu li + li {
+        margin-inline-start: 5px;
+    }
+
+    #menu a {
+        font-size: 14px;
+    }
+
+    .nav-switches {
+        margin-inline-start: 0;
+    }
+
+    .nav-switches .lang-switch {
+        flex-basis: 60px;
+        width: 60px;
+        margin-inline: 3px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    :root {
+        --fixed-header-height: 98px;
+    }
+
+    .nav {
+        flex-wrap: wrap;
+        align-content: flex-start;
+        min-height: var(--fixed-header-height);
+        overflow: visible;
+    }
+
+    .nav > .logo,
+    .nav-switches {
+        height: 56px;
+        line-height: 56px;
+    }
+
+    .nav > .logo {
+        order: 1;
+    }
+
+    .nav-switches {
+        order: 2;
+        margin-inline-start: auto;
+    }
+
+    .nav > #menu {
+        order: 3;
+        flex: 0 0 100%;
+        justify-content: flex-start;
+        width: 100%;
+        margin: 0;
+        padding-bottom: 8px;
+        overflow: visible;
+        line-height: 34px;
+    }
 }
 
 /* Keep article copy orderly while allowing code and media to retain their own layout. */
@@ -529,4 +780,395 @@ body.dark .theme-icon-moon {
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
     overflow-wrap: anywhere;
     word-break: normal;
+}
+
+/* Mermaid diagrams ---------------------------------------------------------
+   A ```mermaid fence is drawn in the browser. Until the diagram is drawn the
+   block keeps the look of every other code block, so the source stays readable
+   when the script cannot load; `is-drawn` (set by mermaid-init.js) then turns
+   the block into the diagram itself. */
+
+.mermaid-figure {
+    margin: 0 0 var(--content-gap);
+}
+
+/* Unprocessed state: mirror the theme's code blocks, which style `pre code`
+   rather than `pre`, so a bare <pre> would otherwise have no frame at all. */
+.mermaid-figure pre.mermaid {
+    position: relative;
+    margin: 0;
+    padding: 10px;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    background: var(--code-block-bg);
+    color: rgb(213, 213, 214);
+    font-size: 0.78em;
+    line-height: 1.5;
+}
+
+.mermaid-figure.is-drawn pre.mermaid {
+    padding: 0;
+    background: none;
+    color: var(--content);
+    font-size: inherit;
+    text-align: center;
+}
+
+.mermaid-figure.is-drawn {
+    border-radius: calc(var(--radius) + 4px);
+    cursor: zoom-in;
+    transition: box-shadow 180ms ease-out;
+}
+
+.mermaid-figure.is-drawn:hover {
+    box-shadow: 0 0 0 1px var(--border);
+}
+
+.mermaid-figure.is-drawn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+}
+
+.mermaid-figure pre.mermaid svg {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Click-to-zoom overlay: the same SVG, shown up to its natural width. */
+.mermaid-zoom {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 3vw;
+    background: color-mix(in srgb, var(--theme) 86%, transparent);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    animation: mermaid-zoom-in 160ms ease-out;
+}
+
+@keyframes mermaid-zoom-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.mermaid-zoom-stage {
+    display: flex;
+    max-width: 94vw;
+    max-height: 86vh;
+    box-sizing: border-box;
+    overflow: auto;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 4px);
+    background: var(--theme);
+    box-shadow: 0 24px 64px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.mermaid-zoom-stage svg {
+    display: block;
+    margin: auto;
+}
+
+.mermaid-zoom-close {
+    position: absolute;
+    top: max(16px, 3vh);
+    right: max(16px, 3vw);
+    display: inline-grid;
+    width: 44px;
+    height: 44px;
+    box-sizing: border-box;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--theme);
+    color: var(--primary);
+    cursor: pointer;
+    transition: background-color 180ms ease-out;
+}
+
+.mermaid-zoom-close:hover {
+    background: var(--tertiary);
+}
+
+.mermaid-zoom-close:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.mermaid-zoom-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+body.mermaid-zoom-open {
+    overflow: hidden;
+}
+
+/* Code block panel -------------------------------------------------------
+   Chroma still owns token colors and markup. This layer only supplies the
+   title bar, controls, gutter treatment, and the optional wrapped state. */
+.post-content .code-block-panel {
+    --code-panel-border: color-mix(in srgb, var(--border) 86%, transparent);
+    --code-panel-muted: color-mix(in srgb, var(--secondary) 78%, transparent);
+    margin: 1.35rem 0;
+    overflow: hidden;
+    border: 1px solid var(--code-panel-border);
+    border-radius: calc(var(--radius) + 8px);
+    background: var(--code-block-bg);
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--primary) 7%, transparent);
+}
+
+.post-content .code-block-toolbar {
+    display: flex;
+    min-height: 54px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 14px 10px 18px;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+    background: color-mix(in srgb, var(--code-block-bg) 92%, var(--theme));
+}
+
+.post-content .code-block-label,
+.post-content .code-block-actions {
+    display: inline-flex;
+    align-items: center;
+}
+
+.post-content .code-block-label {
+    min-width: 0;
+    gap: 10px;
+    color: var(--primary);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.post-content .code-block-label > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.post-content .code-block-label-icon {
+    color: var(--secondary);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: -0.12em;
+}
+
+.post-content .code-block-actions {
+    flex: 0 0 auto;
+    gap: 4px;
+}
+
+.post-content .code-block-action {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    box-sizing: border-box;
+    place-items: center;
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+.post-content .code-block-action:hover,
+.post-content .code-block-action[aria-pressed="true"],
+.post-content .code-block-action.is-copied {
+    border-color: color-mix(in srgb, var(--border) 86%, var(--primary));
+    background: color-mix(in srgb, var(--tertiary) 72%, transparent);
+    color: var(--primary);
+}
+
+.post-content .code-block-action:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.post-content .code-block-action svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    shape-rendering: geometricPrecision;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.post-content .code-block-panel > .highlight {
+    margin: 0;
+    border-radius: 0;
+    background: transparent !important;
+}
+
+.post-content .code-block-panel .highlight > .chroma,
+.post-content .code-block-panel .highlight pre.chroma {
+    margin: 0;
+    border-radius: 0;
+    background: transparent !important;
+}
+
+.post-content .code-block-panel .highlight pre.chroma code {
+    padding: 16px 18px 18px;
+}
+
+.post-content .code-block-panel .chroma .ln {
+    min-width: 2.25em;
+    box-sizing: border-box;
+    margin-right: 0.9em;
+    padding: 0 0.65em 0 0;
+    color: var(--code-panel-muted);
+    text-align: right;
+    user-select: none;
+}
+
+.post-content .code-block-panel.is-wrap .highlight pre.chroma {
+    overflow-x: hidden;
+}
+
+.post-content .code-block-panel.is-wrap .highlight pre.chroma code {
+    display: block;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    word-break: normal;
+}
+
+.post-content .code-block-panel.is-wrap .chroma .line {
+    display: block;
+}
+
+/* Light theme ------------------------------------------------------------
+   PaperMod intentionally uses a dark code canvas in both themes. Give the
+   site-owned panel its own light palette so the toolbar, label, gutter, and
+   Chroma tokens keep readable contrast during the day. */
+body:not(.dark) .post-content .code-block-panel {
+    --code-panel-border: #d8dee8;
+    --code-panel-muted: #64748b;
+    background: #f6f8fb;
+    box-shadow: 0 10px 26px rgb(30 41 59 / 8%);
+}
+
+body:not(.dark) .post-content .code-block-toolbar {
+    border-bottom-color: #dfe5ee;
+    background: #edf1f6;
+}
+
+body:not(.dark) .post-content .code-block-label {
+    color: #1f2937;
+}
+
+body:not(.dark) .post-content .code-block-label-icon {
+    color: #64748b;
+}
+
+body:not(.dark) .post-content .code-block-action {
+    color: #475569;
+}
+
+body:not(.dark) .post-content .code-block-action:hover,
+body:not(.dark) .post-content .code-block-action[aria-pressed="true"],
+body:not(.dark) .post-content .code-block-action.is-copied {
+    border-color: #c4cedc;
+    background: #e1e7ef;
+    color: #172033;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma,
+body:not(.dark) .post-content .code-block-panel .highlight pre.chroma,
+body:not(.dark) .post-content .code-block-panel .highlight pre.chroma code {
+    color: #253043;
+    background: transparent !important;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma .k,
+body:not(.dark) .post-content .code-block-panel .chroma .kc,
+body:not(.dark) .post-content .code-block-panel .chroma .kd,
+body:not(.dark) .post-content .code-block-panel .chroma .kn,
+body:not(.dark) .post-content .code-block-panel .chroma .kp,
+body:not(.dark) .post-content .code-block-panel .chroma .kr,
+body:not(.dark) .post-content .code-block-panel .chroma .kt {
+    color: #6d28d9;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma .s,
+body:not(.dark) .post-content .code-block-panel .chroma .sa,
+body:not(.dark) .post-content .code-block-panel .chroma .sb,
+body:not(.dark) .post-content .code-block-panel .chroma .sc,
+body:not(.dark) .post-content .code-block-panel .chroma .s1,
+body:not(.dark) .post-content .code-block-panel .chroma .s2,
+body:not(.dark) .post-content .code-block-panel .chroma .se {
+    color: #047857;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma .c,
+body:not(.dark) .post-content .code-block-panel .chroma .ch,
+body:not(.dark) .post-content .code-block-panel .chroma .cm,
+body:not(.dark) .post-content .code-block-panel .chroma .c1,
+body:not(.dark) .post-content .code-block-panel .chroma .cs {
+    color: #64748b;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma .na,
+body:not(.dark) .post-content .code-block-panel .chroma .nb,
+body:not(.dark) .post-content .code-block-panel .chroma .nf,
+body:not(.dark) .post-content .code-block-panel .chroma .nl,
+body:not(.dark) .post-content .code-block-panel .chroma .nx {
+    color: #0369a1;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma .m,
+body:not(.dark) .post-content .code-block-panel .chroma .mb,
+body:not(.dark) .post-content .code-block-panel .chroma .mf,
+body:not(.dark) .post-content .code-block-panel .chroma .mi,
+body:not(.dark) .post-content .code-block-panel .chroma .mo {
+    color: #b45309;
+}
+
+body:not(.dark) .post-content .code-block-panel .chroma .nt {
+    color: #b42318;
+}
+
+@media (max-width: 560px) {
+    .post-content .code-block-toolbar {
+        min-height: 50px;
+        padding-inline: 12px;
+    }
+
+    .post-content .code-block-panel .highlight pre.chroma code {
+        padding: 14px 12px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .post-content .code-block-action {
+        transition: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mermaid-figure.is-drawn,
+    .mermaid-zoom-close {
+        transition: none;
+    }
+
+    .mermaid-zoom {
+        animation: none;
+    }
 }

@@ -1,6 +1,6 @@
 {{- define "main" }}
 
-<article class="post-single">
+<article class="post-single"{{ if hugo.IsServer }} data-preview-categories="{{ .Params.categories | default (slice) | jsonify }}" data-preview-tags="{{ .Params.tags | default (slice) | jsonify }}" data-preview-excerpt="{{ partial "article_excerpt.html" . }}" data-preview-truncated="{{ .Truncated }}"{{ end }}>
   <header class="post-header">
     <h1 class="post-title entry-hint-parent">
       {{ .Title }}
@@ -12,11 +12,6 @@
       </span>
       {{- end }}
     </h1>
-    {{- if .Description }}
-    <div class="post-description">
-      {{ .Description }}
-    </div>
-    {{- end }}
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta post-byline">
       {{- $publishedDate := .Date | time.Format "2006-01-02" -}}
@@ -37,7 +32,7 @@
       {{- with $.GetTerms $tags }}
       <span class="post-meta-tags" aria-label="Tags">
         {{- range . }}
-        <a class="post-meta-tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+        <a class="post-meta-tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
         {{- end }}
       </span>
       {{- end }}

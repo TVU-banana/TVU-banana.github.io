@@ -40,7 +40,7 @@
            share one deterministic order, free of locale collation. */ -}}
     {{- $entries := slice }}
     {{- range . }}
-        {{- $entries = $entries | append (dict "name" .Name "count" .Count "url" .Page.Permalink) }}
+        {{- $entries = $entries | append (dict "name" .Name "count" .Count "url" .Page.RelPermalink) }}
     {{- end }}
     <section class="search-tags" aria-labelledby="search-tags-title">
         <h2 id="search-tags-title">{{ i18n "browse_tags" | default "Browse by tag" }}</h2>

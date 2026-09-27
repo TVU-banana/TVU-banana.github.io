@@ -23,7 +23,7 @@
     <div class="logo">
       {{- $labelText := site.Params.label.text | default site.Title }}
       {{- if site.Title }}
-      <a href="{{ "" | absLangURL }}" accesskey="h" title="{{ $labelText }} (Alt + H)">{{ $labelText }}</a>
+      <a href="{{ "" | relLangURL }}" accesskey="h" title="{{ $labelText }} (Alt + H)">{{ $labelText }}</a>
       {{- end }}
     </div>
 
@@ -35,8 +35,16 @@
       {{- $labels := index hugo.Data.navlabels .Identifier }}
       {{- $labelEn := index $labels "en" | default .Name }}
       {{- $labelZh := index $labels "zh" | default .Name }}
+      {{- $menuPath := strings.TrimPrefix "/" .URL }}
+      {{- $hrefEn := "" }}
+      {{- $hrefZh := "" }}
+      {{- range hugo.Sites }}
+        {{- $href := printf "%s%s" .Home.RelPermalink $menuPath }}
+        {{- if eq .Language.Lang "en" }}{{ $hrefEn = $href }}{{ end }}
+        {{- if eq .Language.Lang "zh" }}{{ $hrefZh = $href }}{{ end }}
+      {{- end }}
       <li>
-        <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }}{{ cond $isSearch " (Alt + /)" "" }}" aria-label="{{ .Title | default .Name }}" data-menu-shortcut="{{ cond $isSearch " (Alt + /)" "" }}"{{ if $isSearch }} accesskey="/"{{ end }}>
+        <a href="{{ .URL | relLangURL }}" data-href-en="{{ $hrefEn }}" data-href-zh="{{ $hrefZh }}" title="{{ .Title | default .Name }}{{ cond $isSearch " (Alt + /)" "" }}" aria-label="{{ .Title | default .Name }}" data-menu-shortcut="{{ cond $isSearch " (Alt + /)" "" }}"{{ if $isSearch }} accesskey="/"{{ end }}>
           <span data-menu-label data-label-en="{{ $labelEn }}" data-label-zh="{{ $labelZh }}">{{ .Pre }}{{ .Name }}{{ .Post }}</span>
         </a>
       </li>
@@ -93,6 +101,7 @@
       });
 
       menuItems.forEach((link) => {
+        link.href = language === "en" ? link.dataset.hrefEn : link.dataset.hrefZh;
         const label = link.querySelector("[data-menu-label]");
         if (!label) return;
         const text = language === "en" ? label.dataset.labelEn : label.dataset.labelZh;
@@ -141,11 +150,7 @@
       setMenuLanguage(initialLanguage);
       applyActiveMenu();
     };
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", applyInitialState, { once: true });
-    } else {
-      applyInitialState();
-    }
+    applyInitialState();
 
     languageOptions.forEach((option) => {
       option.addEventListener("click", () => setMenuLanguage(option.dataset.lang));

@@ -1,0 +1,92 @@
+{{- /* Taxonomy terms come from the canonical content language. Category cards
+       expand article links on this page, so new categories work in both
+       language hubs without a separate translated term page. Tags retain
+       their existing linked index. */ -}}
+{{- define "main" }}
+
+{{- if .Title }}
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description }}
+    </div>
+    {{- end }}
+</header>
+{{- end }}
+
+{{- $type := .Type }}
+{{- $canonicalLang := site.Params.canonicalContentLanguage | default site.Language.Lang }}
+{{- $canonicalSite := site }}
+{{- range hugo.Sites }}
+{{- if eq .Language.Lang $canonicalLang }}{{ $canonicalSite = . }}{{ end }}
+{{- end }}
+
+{{- $terms := .Data.Terms.Alphabetical }}
+{{- if ne site.Language.Lang $canonicalLang }}
+{{- with $canonicalSite.GetPage (printf "/%s" $type) }}
+{{- $terms = .Data.Terms.Alphabetical }}
+{{- end }}
+{{- end }}
+
+{{- if eq $type "categories" }}
+{{- if hugo.IsServer }}
+{{- $previewPosts := slice }}
+{{- range where $canonicalSite.RegularPages "Section" "posts" }}
+{{- $previewPosts = $previewPosts | append .RelPermalink }}
+{{- end }}
+<div id="category-preview" data-posts="{{ $previewPosts | jsonify }}">
+    <span data-category-one hidden>{{ i18n "category_article_one" }}</span>
+    <span data-category-many hidden>{{ i18n "category_article_many" }}</span>
+    <span data-category-empty hidden>{{ i18n "categories_empty" }}</span>
+</div>
+<script defer src="{{ "js/category-preview.js" | relURL }}?v=2"></script>
+{{- end }}
+{{- if $terms }}
+<div class="category-grid">
+    {{- range $terms }}
+    <details class="category-card">
+        <summary>
+            <span class="category-card-heading">{{ .Page.LinkTitle }}</span>
+            <span class="category-card-count">{{ .Count }} {{ if eq .Count 1 }}{{ i18n "category_article_one" }}{{ else }}{{ i18n "category_article_many" }}{{ end }}</span>
+            <span class="category-card-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </span>
+        </summary>
+        <ul class="category-card-articles">
+            {{- range .Page.RegularPages.ByDate.Reverse }}
+            {{- partial "category_article.html" . }}
+            {{- end }}
+        </ul>
+    </details>
+    {{- end }}
+</div>
+{{- else }}
+<p class="categories-empty">{{ i18n "categories_empty" }}</p>
+{{- end }}
+{{- else }}
+<ul class="terms-tags">
+    {{- range $terms }}
+    {{- $name := .Name }}
+    {{- $count := .Count }}
+    {{- $link := "" }}
+    {{- with site.GetPage (printf "/%s/%s" $type $name) }}
+    {{- $link = .RelPermalink }}
+    {{- end }}
+    {{- if not $link }}
+    {{- with $canonicalSite.GetPage (printf "/%s/%s" $type $name) }}
+    {{- $link = .RelPermalink }}
+    {{- end }}
+    {{- end }}
+    {{- if $link }}
+    <li>
+        <a href="{{ $link }}">{{ $name }} <sup><strong><sup>{{ $count }}</sup></strong></sup> </a>
+    </li>
+    {{- end }}
+    {{- end }}
+</ul>
+{{- end }}
+
+{{- end }}{{/* end main */ -}}

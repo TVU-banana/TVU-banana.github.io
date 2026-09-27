@@ -1,0 +1,12 @@
+{{- /* Draw ```mermaid fences as diagrams. Without this hook Chroma emits the
+       diagram source as a highlighted code block, which is not a diagram.
+
+       The raw source is kept inside the block on purpose: the client script
+       (static/js/mermaid/mermaid-init.js) reads it back to redraw the diagram
+       when the reader switches the site between the light and dark theme. */ -}}
+{{- .Page.Store.Set "hasMermaid" true -}}
+<figure class="mermaid-figure" tabindex="0" role="button"
+  aria-label="{{ i18n "zoom_diagram" }}"
+  data-close-label="{{ i18n "close_diagram" }}">
+  <pre class="mermaid">{{ .Inner | htmlEscape | safeHTML }}</pre>
+</figure>

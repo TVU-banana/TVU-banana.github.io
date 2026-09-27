@@ -1,0 +1,15 @@
+{{- /* Render Goldmark passthrough elements with Hugo's embedded KaTeX engine.
+       The passthrough delimiters in config.yml keep LaTeX out of normal
+       Markdown parsing; .Type selects inline or display mode. */ -}}
+{{- $opts := dict
+      "output" "htmlAndMathml"
+      "displayMode" (eq .Type "block")
+      "throwOnError" false -}}
+{{- with try (transform.ToMath .Inner $opts) }}
+  {{- with .Err }}
+    {{- errorf "Unable to render LaTeX at %s: %s" $.Position . -}}
+  {{- else }}
+    {{- .Value }}
+    {{- $.Page.Store.Set "hasMath" true }}
+  {{- end }}
+{{- end -}}

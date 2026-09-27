@@ -1,0 +1,21 @@
+{{- /* Return the article list belonging to a taxonomy term page.
+
+       Posts are authored once in the canonical content language, so a site in
+       any other language owns term pages but no posts. Those term pages mirror
+       the canonical term page, so /zh/tags/<term>/ lists the same articles as
+       /tags/<term>/. Callers receive the pages as the partial's return value.
+
+       Callers: layouts/_default/list.html, layouts/_default/rss.xml */ -}}
+{{- $page := . -}}
+{{- $pages := $page.RegularPages -}}
+{{- $canonicalLang := site.Params.canonicalContentLanguage | default site.Language.Lang -}}
+{{- if and (eq $page.Kind "term") (ne site.Language.Lang $canonicalLang) -}}
+  {{- $canonicalSite := site -}}
+  {{- range hugo.Sites -}}
+    {{- if eq .Language.Lang $canonicalLang -}}{{- $canonicalSite = . -}}{{- end -}}
+  {{- end -}}
+  {{- with $canonicalSite.GetPage (printf "/%s/%s" $page.Data.Plural $page.Data.Term) -}}
+    {{- $pages = .RegularPages -}}
+  {{- end -}}
+{{- end -}}
+{{- return $pages -}}

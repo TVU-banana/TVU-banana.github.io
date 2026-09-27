@@ -1,0 +1,18 @@
+{{- /* Head custom content area (overrides the theme's empty partial). */ -}}
+
+{{- /* Mermaid is a 3.4 MB bundle, so it is fetched only by pages that actually
+       contain a diagram. Rendering the content here runs the mermaid render
+       hook, which records the flag on the page store; the head is built before
+       the page body, so without this first pass the flag would still be unset.
+       `.Content` is cached per page, so the body reuses this render. */ -}}
+{{- with .Content }}{{ end -}}
+{{- if or (.Store.Get "hasMath") .IsBranch (eq .Layout "archives") (eq .Layout "search") }}
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.18.4/dist/katex.min.css"
+  integrity="sha384-u1zONI5gPXUx0UKI62c75/zww972y0v2rSK5ZYlVdS6xEuWDeZWUI66v6t1gvlXJ"
+  crossorigin="anonymous">
+{{- end }}
+{{- if .Store.Get "hasMermaid" }}
+<script defer src="{{ "js/mermaid/mermaid.min.js" | relURL }}"></script>
+<script defer src="{{ "js/mermaid/mermaid-init.js" | relURL }}"></script>
+{{- end }}
