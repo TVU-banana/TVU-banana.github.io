@@ -1,7 +1,8 @@
 /* Custom styles added to demo */
 
 :root {
-    --main-width: 720px;
+    /* At 18px body text, 810px fits about 45 full-width Chinese characters. */
+    --main-width: 810px;
     --nav-width: var(--main-width);
     --fixed-header-height: var(--header-height);
 }
