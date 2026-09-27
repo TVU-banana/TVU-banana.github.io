@@ -57,7 +57,7 @@ flowchart LR
 
 ## 渲染契约
 
-- 首页、普通列表、Tags 和 Archive 使用站点的 `layouts/partials/article_card.html`；Categories 总览使用可展开卡片，在每篇文章行显示标题、正文摘要、发布日期和 Tags。两处文章列表的摘要共用 `layouts/partials/article_excerpt.html`。`layouts/_default/terms.html` 只在本地服务中加载 `static/js/category-preview.js`，以弥补 Hugo 增量构建对总览的缓存；脚本重建的文章行保持同样的信息结构。
+- 首页、普通列表、Tags 和 Archive 使用站点的 `layouts/partials/article_card.html`；Categories 总览使用可展开卡片，在每篇文章行显示标题、正文摘要、发布日期和 Tags。专栏文章行的标题链接覆盖整行可点击区域，悬停或键盘聚焦时标题、摘要、日期与标签统一变淡，不移动或放大文章行。两处文章列表的摘要共用 `layouts/partials/article_excerpt.html`。`layouts/_default/terms.html` 只在本地服务中加载 `static/js/category-preview.js`，以弥补 Hugo 增量构建对总览的缓存；脚本重建的文章行保持同样的信息结构。
 - `layouts/_default/index.json` 是搜索索引；英文和中文搜索页查询同一规范语言文章集合。
 - `layouts/_default/rss.xml` 生成首页、section 和 taxonomy feeds；首页双语 feed 都基于规范语言文章。
 - 语言切换由站点顶部导航处理；页头在解析到导航后立即应用已保存的显示语言，并同步更新菜单链接到所选语言的路径。不要在新页面中重复创建一套语言选择器。
@@ -67,6 +67,7 @@ flowchart LR
 - 文章标题、摘要、日期和标签仍由原有模板分别渲染；本次只移除副标题展示路径。
 - 文章正文的 H1–H6 沿用 PaperMod 的标题锚点；鼠标悬停标题行时，站点样式在标题后显示对应数量的浅色 `#`，提示标题层级。文章页主标题不使用此提示。
 - 文章正文 H1/H2 的 32px/27px 字号由站点 `assets/css/extended/custom.css` 覆盖，避免依赖主题子模块工作区中的未提交修改。
+- 文章页右下角使用一个圆形跳转按钮：页面接近顶部时箭头向下、跳到文章末尾；离开顶部后箭头向上、返回顶部。按钮状态由实际滚动位置更新。`layouts/_default/single.html` 提供末尾锚点，`layouts/partials/footer.html` 输出按钮及状态逻辑，`assets/css/extended/custom.css` 保持箭头居中。其他页面沿用返回顶部按钮。
 - 普通代码围栏由 `layouts/_default/_markup/render-codeblock.html` 包装为站点代码块面板，底层仍使用 Hugo Chroma；`mermaid` 语言继续由 `render-codeblock-mermaid.html` 单独处理。
 - `config.yml` 使用 `markup.highlight.noClasses: false` 和 `lineNos: inline` 输出 Chroma class 与行号；`assets/css/extended/custom.css` 负责面板、浅色/深色主题和行号视觉，`static/js/code-blocks.js` 负责复制与换行切换。
 - LaTeX 通过 Goldmark passthrough 捕获，使用 `layouts/_markup/render-passthrough.html` 调用 Hugo 内置 KaTeX，输出 HTML + MathML；KaTeX CSS 在包含文章内容的页面中按需加载。

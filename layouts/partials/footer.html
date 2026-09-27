@@ -18,11 +18,19 @@
 {{- end }}
 
 {{- if (not site.Params.disableScrollToTop) }}
+{{- if and .IsPage (eq .Section "posts") }}
+<a href="#article-end" aria-label="go to article end" title="Go to Article End" class="top-link article-jump-link" id="article-jump-link" data-direction="down">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor" aria-hidden="true">
+        <path d="M0 0h12L6 6z" />
+    </svg>
+</a>
+{{- else }}
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor" aria-hidden="true">
         <path d="M12 6H0l6-6z" />
     </svg>
 </a>
+{{- end }}
 {{- end }}
 
 {{- partial "extend_footer.html" . }}
@@ -58,16 +66,32 @@
 
 {{- if (not site.Params.disableScrollToTop) }}
 <script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
+    var articleJump = document.getElementById("article-jump-link");
+    if (articleJump) {
+        function updateArticleJump() {
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            var toEnd = scrollTop <= 80 && maxScroll - scrollTop > 2;
+            articleJump.style.display = maxScroll > 2 ? "grid" : "none";
+            articleJump.dataset.direction = toEnd ? "down" : "up";
+            articleJump.href = toEnd ? "#article-end" : "#top";
+            articleJump.setAttribute("aria-label", toEnd ? "go to article end" : "go to top");
+            articleJump.title = toEnd ? "Go to Article End" : "Go to Top";
         }
-    };
+        window.addEventListener("scroll", updateArticleJump, { passive: true });
+        window.addEventListener("resize", updateArticleJump);
+        window.addEventListener("load", updateArticleJump);
+        updateArticleJump();
+    } else {
+        var mybutton = document.getElementById("top-link");
+        function updateTopLink() {
+            var visible = window.scrollY > 800;
+            mybutton.style.visibility = visible ? "visible" : "hidden";
+            mybutton.style.opacity = visible ? "1" : "0";
+        }
+        window.addEventListener("scroll", updateTopLink, { passive: true });
+        updateTopLink();
+    }
 </script>
 {{- end }}
 
