@@ -98,19 +98,34 @@
 {{- if (not site.Params.disableThemeToggle) }}
 <script>
     const themeToggle = document.getElementById("theme-toggle");
+    const mobileThemeSwitch = document.querySelector(".theme-switch");
 
     if (themeToggle) {
-        const applyTheme = () => {
-            const isDark = document.body.classList.toggle("dark");
-            localStorage.setItem("pref-theme", isDark ? "dark" : "light");
+        const themeOptions = mobileThemeSwitch ? [...mobileThemeSwitch.querySelectorAll("button[data-theme]")] : [];
+        const syncThemeControls = () => {
+            const isDark = document.body.classList.contains("dark");
             themeToggle.setAttribute("aria-pressed", String(isDark));
             themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+            if (mobileThemeSwitch) mobileThemeSwitch.classList.toggle("is-dark", isDark);
+            themeOptions.forEach((option) => {
+                const isActive = option.dataset.theme === (isDark ? "dark" : "light");
+                option.closest("li").classList.toggle("is-active", isActive);
+                option.setAttribute("aria-pressed", String(isActive));
+            });
+        };
+        const applyTheme = (theme) => {
+            document.body.classList.toggle("dark", theme === "dark");
+            localStorage.setItem("pref-theme", theme);
+            syncThemeControls();
         };
 
-        themeToggle.setAttribute("aria-pressed", String(document.body.classList.contains("dark")));
+        syncThemeControls();
 
         themeToggle.addEventListener("click", () => {
-            applyTheme();
+            applyTheme(document.body.classList.contains("dark") ? "light" : "dark");
+        });
+        themeOptions.forEach((option) => {
+            option.addEventListener("click", () => applyTheme(option.dataset.theme));
         });
     }
 </script>

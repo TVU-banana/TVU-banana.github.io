@@ -51,7 +51,13 @@
       {{- end }}
     </ul>
 
-    <div class="nav-switches">
+    <button class="mobile-settings-trigger" type="button" aria-label="Open display settings" aria-controls="nav-settings" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <div class="nav-switches" id="nav-settings">
       {{- $currentLang := .Lang }}
       <ul class="lang-switch {{ if eq $currentLang "zh" }}is-zh{{ else }}is-en{{ end }}" data-page-language="{{ $currentLang }}" aria-label="Language">
         {{- range hugo.Sites }}
@@ -76,6 +82,14 @@
           <path class="theme-icon-moon" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       </button>
+      <ul class="theme-switch" aria-label="Color theme">
+        <li><button type="button" data-theme="light" title="Light theme" aria-label="Light theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        </button></li>
+        <li><button type="button" data-theme="dark" title="Dark theme" aria-label="Dark theme" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg>
+        </button></li>
+      </ul>
       {{- end }}
     </div>
   </nav>
@@ -155,5 +169,30 @@
     languageOptions.forEach((option) => {
       option.addEventListener("click", () => setMenuLanguage(option.dataset.lang));
     });
+  }
+
+  const mobileSettingsTrigger = document.querySelector(".mobile-settings-trigger");
+  const navSettings = document.getElementById("nav-settings");
+  if (mobileSettingsTrigger && navSettings) {
+    const closeSettings = () => {
+      navSettings.classList.remove("is-open");
+      mobileSettingsTrigger.setAttribute("aria-expanded", "false");
+      mobileSettingsTrigger.setAttribute("aria-label", "Open display settings");
+    };
+    mobileSettingsTrigger.addEventListener("click", () => {
+      const isOpen = navSettings.classList.toggle("is-open");
+      mobileSettingsTrigger.setAttribute("aria-expanded", String(isOpen));
+      mobileSettingsTrigger.setAttribute("aria-label", isOpen ? "Close display settings" : "Open display settings");
+    });
+    document.addEventListener("click", (event) => {
+      if (!navSettings.contains(event.target) && !mobileSettingsTrigger.contains(event.target)) closeSettings();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && navSettings.classList.contains("is-open")) {
+        closeSettings();
+        mobileSettingsTrigger.focus();
+      }
+    });
+    window.matchMedia("(min-width: 481px)").addEventListener("change", closeSettings);
   }
 </script>
