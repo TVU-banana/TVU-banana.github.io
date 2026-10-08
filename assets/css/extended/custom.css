@@ -1,9 +1,11 @@
 /* Custom styles added to demo */
 
 :root {
-    /* At 18px body text, 810px fits about 45 full-width Chinese characters. */
-    --main-width: 810px;
+    /* At 18px body text, 630px fits about 35 full-width Chinese characters. */
+    --main-width: 630px;
     --nav-width: var(--main-width);
+    /* Tables and diagrams can use about 50 full-width characters. */
+    --wide-content-width: 900px;
     --fixed-header-height: var(--header-height);
 }
 
@@ -890,7 +892,10 @@ body.dark .theme-icon-moon {
 /* Restore native table layout so its visible rows fill the article column. */
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) {
     display: table;
-    width: 100%;
+    width: min(var(--wide-content-width), calc(100vw - 32px));
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     table-layout: fixed;
 }
 
@@ -907,6 +912,10 @@ body.dark .theme-icon-moon {
    the block into the diagram itself. */
 
 .mermaid-figure {
+    width: min(var(--wide-content-width), calc(100vw - 32px));
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     margin: 0 0 var(--content-gap);
 }
 
