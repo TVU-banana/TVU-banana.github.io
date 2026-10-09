@@ -1,8 +1,8 @@
 /* Custom styles added to demo */
 
 :root {
-    /* At 18px body text, 630px fits about 35 full-width Chinese characters. */
-    --main-width: 630px;
+    /* At 18px body text, 720px fits about 40 full-width Chinese characters. */
+    --main-width: 720px;
     --nav-width: var(--main-width);
     /* Tables and diagrams can use about 50 full-width characters. */
     --wide-content-width: 900px;

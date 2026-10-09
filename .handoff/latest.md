@@ -1,8 +1,8 @@
 # Latest handoff
 
-当前最新交接记录：[`2026-10-08-reading-widths.md`](2026-10-08-reading-widths.md)
+当前最新交接记录：[`2026-10-09-reading-width-40-char.md`](2026-10-09-reading-width-40-char.md)
 
-前序英文排版记录：[`2026-10-01-english-typography.md`](2026-10-01-english-typography.md)。
+前序宽度调整记录：[`2026-10-08-reading-widths.md`](2026-10-08-reading-widths.md)。
 
 同日另有一份记录 [`2026-10-01-blog-design-research.md`](2026-10-01-blog-design-research.md)（博客设计调研，未提交），与本记录相互独立。
 
